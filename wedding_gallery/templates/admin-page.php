@@ -8,6 +8,8 @@
  * - array  $uploads
  * - string $allowed_text
  * - int    $max_upload_mb
+ * - int    $effective_max_upload_mb
+ * - array  $upload_limits
  * - string $notice
  */
 
@@ -21,6 +23,33 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<?php if ( 'saved' === $notice ) : ?>
 		<div class="notice notice-success is-dismissible">
 			<p><?php esc_html_e( 'Settings saved.', 'wedding-gallery' ); ?></p>
+		</div>
+	<?php elseif ( 'saved_clamped' === $notice ) : ?>
+		<div class="notice notice-warning is-dismissible">
+			<p>
+				<?php
+				printf(
+					/* translators: %d: effective max upload in MB */
+					esc_html__( 'Settings saved. Max upload size was clamped to %d MB to match server/runtime safety limits.', 'wedding-gallery' ),
+					(int) $effective_max_upload_mb
+				);
+				?>
+			</p>
+		</div>
+	<?php endif; ?>
+
+	<?php if ( ! empty( $upload_limits['is_clamped'] ) ) : ?>
+		<div class="notice notice-warning">
+			<p>
+				<?php
+				printf(
+					/* translators: 1: configured MB, 2: runtime cap MB */
+					esc_html__( 'Current configured max is %1$d MB, but this server can safely handle up to %2$d MB. Uploads are limited to the lower value.', 'wedding-gallery' ),
+					(int) $upload_limits['configured_mb'],
+					(int) $upload_limits['runtime_cap_mb']
+				);
+				?>
+			</p>
 		</div>
 	<?php endif; ?>
 
@@ -87,17 +116,30 @@ if ( ! defined( 'ABSPATH' ) ) {
 							step="1"
 							value="<?php echo esc_attr( $max_upload_mb ); ?>"
 						/>
-						<p class="description">
-							<?php
-							printf(
-								/* translators: %s: allowed file types */
-								esc_html__( 'Allowed file types: %s', 'wedding-gallery' ),
-								esc_html( $allowed_text )
-							);
-							?>
-						</p>
-					</td>
-				</tr>
+							<p class="description">
+								<?php
+								printf(
+									/* translators: 1: allowed file types, 2: effective MB */
+									esc_html__( 'Allowed file types: %1$s. Effective per-file limit: %2$d MB.', 'wedding-gallery' ),
+									esc_html( $allowed_text ),
+									(int) $effective_max_upload_mb
+								);
+								?>
+							</p>
+							<p class="description">
+								<?php
+								printf(
+									/* translators: 1: upload_max_filesize MB, 2: post_max_size MB, 3: memory_limit MB, 4: memory-safe MB */
+									esc_html__( 'Runtime limits (MB): upload_max_filesize=%1$d, post_max_size=%2$d, memory_limit=%3$d, memory-safe ceiling=%4$d.', 'wedding-gallery' ),
+									(int) $upload_limits['upload_max_mb'],
+									(int) $upload_limits['post_max_mb'],
+									(int) $upload_limits['memory_limit_mb'],
+									(int) $upload_limits['memory_safe_mb']
+								);
+								?>
+							</p>
+						</td>
+					</tr>
 			</tbody>
 		</table>
 
@@ -136,16 +178,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<td><?php echo esc_html( wp_date( 'Y-m-d H:i', (int) $file['modified'] ) ); ?></td>
 						<td>
 							<?php
-							$download_url = wp_nonce_url(
-								add_query_arg(
-									array(
-										'action' => 'wg_download_upload',
-										'file'   => $file['name'],
+								$download_url = wp_nonce_url(
+									add_query_arg(
+										array(
+											'action' => 'wg_download_upload',
+											'file'   => $file['stored_file'],
+										),
+										admin_url( 'admin-post.php' )
 									),
-									admin_url( 'admin-post.php' )
-								),
-								'wg_download_file_' . $file['name']
-							);
+									'wg_download_file_' . $file['stored_file']
+								);
 							?>
 							<a class="button button-secondary" href="<?php echo esc_url( $download_url ); ?>">
 								<?php esc_html_e( 'Download', 'wedding-gallery' ); ?>
