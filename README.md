@@ -1,4 +1,4 @@
-# Wedding Gallery Plugin (MVP)
+# Wedding Gallery Plugin (Pilot 0.3.0)
 
 WordPress plugin for collecting guest wedding photos/videos through a protected upload link (QR-ready), with encrypted media storage and admin-only download.
 
@@ -7,8 +7,11 @@ WordPress plugin for collecting guest wedding photos/videos through a protected 
 - Guest upload page via shortcode: `[wedding_gallery_upload]`
 - Token-protected guest access link (`wg_token`)
 - Local QR code generation in WP admin (no external QR service)
+- Mobile-first guest upload UI (multi-file + progress feedback)
 - Encrypted media blob storage in `wp-content/uploads/wedding-gallery/`
-- Admin file list, health states, and admin-only download
+- Metadata integrity checks and tamper detection
+- Admin file list, health states, diagnostics, and admin-only download
+- WordPress i18n support (`wedding-gallery` text domain) with German (`de_DE`) translations
 
 ## Setup (Pilot)
 
@@ -20,6 +23,10 @@ WordPress plugin for collecting guest wedding photos/videos through a protected 
 5. Set **Upload Page URL** to the page from step 3.
 6. Save settings.
 7. Copy the generated **Guest Upload Link** or use the generated QR code.
+
+## Version
+
+- Current pilot target: `0.3.0`
 
 ## Guest Token + QR Workflow
 
@@ -59,6 +66,17 @@ Use checked cleanup only when permanent deletion is explicitly desired.
 - Large file handling is bounded by runtime limits (`upload_max_filesize`, `post_max_size`, `memory_limit`), and plugin clamps configured max upload accordingly.
 - Admin download currently decrypts full file in PHP memory (non-streaming).
 - Existing legacy files/metadata may appear with warning statuses in admin.
+
+## Release Packaging Notes
+
+For a production plugin zip, ship the plugin directory `wedding_gallery/` only.
+
+Do not ship repository noise / handoff artifacts:
+
+- `.git/`, `.gitignore`, `.gitattributes`
+- root-level docs (`README.md`, `CHANGELOG.md`, `docs/`)
+- `.DS_Store`
+- `wedding_gallery/languages/wedding-gallery.pot` (optional source template, not required at runtime)
 
 ## Pilot Handoff Checklist
 

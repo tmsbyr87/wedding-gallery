@@ -1,0 +1,9 @@
+# Exclude repository and handoff artifacts from release archives.
+/.DS_Store export-ignore
+/.gitignore export-ignore
+/.gitattributes export-ignore
+/README.md export-ignore
+/CHANGELOG.md export-ignore
+/docs export-ignore
+/wedding_gallery/.DS_Store export-ignore
+/wedding_gallery/languages/wedding-gallery.pot export-ignore
