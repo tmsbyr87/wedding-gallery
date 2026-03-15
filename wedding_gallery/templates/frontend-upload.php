@@ -232,7 +232,7 @@ $status_title = 'success' === $status ? __( 'Thank you, upload complete.', 'wedd
 					type="file"
 					multiple
 					required
-					accept=".jpg,.jpeg,.png,.webp,.mp4,image/jpeg,image/png,image/webp,video/mp4"
+					accept=".jpg,.jpeg,.png,.webp,.mp4,.mov,image/jpeg,image/png,image/webp,video/mp4,video/quicktime"
 				/>
 				<label for="wg_files" id="wg_picker_btn" class="wg-picker-btn">
 					<?php esc_html_e( 'Choose Photos or Videos', 'wedding-gallery' ); ?>

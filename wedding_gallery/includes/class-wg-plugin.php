@@ -156,6 +156,7 @@ class WG_Plugin {
 			'png'          => 'image/png',
 			'webp'         => 'image/webp',
 			'mp4'          => 'video/mp4',
+			'mov'          => 'video/quicktime',
 		);
 	}
 
@@ -163,7 +164,7 @@ class WG_Plugin {
 	 * @return string[]
 	 */
 	private function get_allowed_extensions() {
-		return array( 'jpg', 'jpeg', 'jpe', 'png', 'webp', 'mp4' );
+		return array( 'jpg', 'jpeg', 'jpe', 'png', 'webp', 'mp4', 'mov' );
 	}
 
 	/**
@@ -721,7 +722,7 @@ class WG_Plugin {
 		$max_upload_mb = (int) $upload_limits['effective_mb'];
 		$action_url    = admin_url( 'admin-post.php' );
 		$redirect_url  = $this->get_current_url();
-		$allowed_text  = '.jpg, .jpeg, .png, .webp, .mp4';
+		$allowed_text  = '.jpg, .jpeg, .png, .webp, .mp4, .mov';
 
 		ob_start();
 		require WG_PLUGIN_DIR . 'templates/frontend-upload.php';
@@ -770,7 +771,8 @@ class WG_Plugin {
 		}
 
 		$successful = 0;
-		$errors     = array();
+		$error_codes = array();
+		$rejected_file_labels = array();
 
 		$total_files = count( $files['name'] );
 		for ( $i = 0; $i < $total_files; $i++ ) {
@@ -780,86 +782,74 @@ class WG_Plugin {
 			$error    = isset( $files['error'][ $i ] ) ? absint( $files['error'][ $i ] ) : UPLOAD_ERR_NO_FILE;
 
 			if ( UPLOAD_ERR_OK !== $error ) {
-				$errors[] = __( 'One file failed to upload.', 'wedding-gallery' );
+				$this->collect_rejected_file_label( $rejected_file_labels, $name );
+				if ( in_array( $error, array( UPLOAD_ERR_INI_SIZE, UPLOAD_ERR_FORM_SIZE ), true ) ) {
+					$error_codes[] = 'too_large';
+				} else {
+					$error_codes[] = 'upload_failed';
+				}
 				continue;
 			}
 
 			if ( empty( $tmp_name ) || ! is_uploaded_file( $tmp_name ) ) {
-				$errors[] = __( 'Invalid upload source detected.', 'wedding-gallery' );
+				$this->collect_rejected_file_label( $rejected_file_labels, $name );
+				$error_codes[] = 'upload_failed';
 				continue;
 			}
 
 			$sanitized_name = sanitize_file_name( $name );
 			if ( empty( $sanitized_name ) ) {
-				$errors[] = __( 'Invalid filename detected.', 'wedding-gallery' );
+				$error_codes[] = 'upload_failed';
 				continue;
 			}
 
 			if ( $size > $max_bytes ) {
-				$errors[] = sprintf(
-					/* translators: 1: filename, 2: max size in MB */
-					__( '%1$s exceeds maximum upload size of %2$d MB.', 'wedding-gallery' ),
-					$sanitized_name,
-					$max_upload_mb
-				);
+				$this->collect_rejected_file_label( $rejected_file_labels, $sanitized_name );
+				$error_codes[] = 'too_large';
 				continue;
 			}
 
 			$ext = strtolower( pathinfo( $sanitized_name, PATHINFO_EXTENSION ) );
 			if ( ! in_array( $ext, $allowed_exts, true ) ) {
-				$errors[] = sprintf(
-					/* translators: %s: filename */
-					__( '%s has an unsupported file extension.', 'wedding-gallery' ),
-					$sanitized_name
-				);
+				$this->collect_rejected_file_label( $rejected_file_labels, $sanitized_name );
+				$error_codes[] = 'unsupported_type';
 				continue;
 			}
 
 			$type_data = wp_check_filetype_and_ext( $tmp_name, $sanitized_name, $allowed_mimes );
 			if ( empty( $type_data['ext'] ) || empty( $type_data['type'] ) ) {
-				$errors[] = sprintf(
-					/* translators: %s: filename */
-					__( '%s failed file type validation.', 'wedding-gallery' ),
-					$sanitized_name
-				);
+				$this->collect_rejected_file_label( $rejected_file_labels, $sanitized_name );
+				$error_codes[] = 'unsupported_type';
 				continue;
 			}
 
 			if ( 0 === strpos( $type_data['type'], 'image/' ) ) {
 				$image_info = @getimagesize( $tmp_name ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 				if ( false === $image_info ) {
-					$errors[] = sprintf(
-						/* translators: %s: filename */
-						__( '%s is not a valid image file.', 'wedding-gallery' ),
-						$sanitized_name
-					);
+					$this->collect_rejected_file_label( $rejected_file_labels, $sanitized_name );
+					$error_codes[] = 'unsupported_type';
 					continue;
 				}
 			}
 
 			$file_contents = file_get_contents( $tmp_name ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 			if ( false === $file_contents ) {
-				$errors[] = sprintf(
-					/* translators: %s: filename */
-					__( 'Could not read %s.', 'wedding-gallery' ),
-					$sanitized_name
-				);
+				$this->collect_rejected_file_label( $rejected_file_labels, $sanitized_name );
+				$error_codes[] = 'processing_failed';
 				continue;
 			}
 
 			$encrypted_payload = $this->encrypt_contents( $file_contents );
 			if ( false === $encrypted_payload ) {
-				$errors[] = sprintf(
-					/* translators: %s: filename */
-					__( 'Could not securely store %s.', 'wedding-gallery' ),
-					$sanitized_name
-				);
+				$this->collect_rejected_file_label( $rejected_file_labels, $sanitized_name );
+				$error_codes[] = 'processing_failed';
 				continue;
 			}
 
 			$storage_names = $this->generate_storage_filenames( $upload_dir );
 			if ( empty( $storage_names['blob'] ) || empty( $storage_names['meta'] ) ) {
-				$errors[] = __( 'Could not allocate storage for upload.', 'wedding-gallery' );
+				$this->collect_rejected_file_label( $rejected_file_labels, $sanitized_name );
+				$error_codes[] = 'processing_failed';
 				continue;
 			}
 
@@ -868,11 +858,8 @@ class WG_Plugin {
 
 			$written_blob = file_put_contents( $target_path, $encrypted_payload['ciphertext'], LOCK_EX );
 			if ( false === $written_blob ) {
-				$errors[] = sprintf(
-					/* translators: %s: filename */
-					__( 'Could not save %s.', 'wedding-gallery' ),
-					$sanitized_name
-				);
+				$this->collect_rejected_file_label( $rejected_file_labels, $sanitized_name );
+				$error_codes[] = 'processing_failed';
 				continue;
 			}
 
@@ -885,22 +872,16 @@ class WG_Plugin {
 			);
 			if ( false === $private_metadata_json ) {
 				wp_delete_file( $target_path );
-				$errors[] = sprintf(
-					/* translators: %s: filename */
-					__( 'Could not encode private metadata for %s.', 'wedding-gallery' ),
-					$sanitized_name
-				);
+				$this->collect_rejected_file_label( $rejected_file_labels, $sanitized_name );
+				$error_codes[] = 'processing_failed';
 				continue;
 			}
 
 			$private_metadata_payload = $this->encrypt_contents( $private_metadata_json );
 			if ( false === $private_metadata_payload ) {
 				wp_delete_file( $target_path );
-				$errors[] = sprintf(
-					/* translators: %s: filename */
-					__( 'Could not protect metadata for %s.', 'wedding-gallery' ),
-					$sanitized_name
-				);
+				$this->collect_rejected_file_label( $rejected_file_labels, $sanitized_name );
+				$error_codes[] = 'processing_failed';
 				continue;
 			}
 
@@ -920,11 +901,8 @@ class WG_Plugin {
 			$metadata_mac = $this->compute_metadata_integrity_mac( $storage_names['blob'], $metadata );
 			if ( false === $metadata_mac ) {
 				wp_delete_file( $target_path );
-				$errors[] = sprintf(
-					/* translators: %s: filename */
-					__( 'Could not sign metadata for %s.', 'wedding-gallery' ),
-					$sanitized_name
-				);
+				$this->collect_rejected_file_label( $rejected_file_labels, $sanitized_name );
+				$error_codes[] = 'processing_failed';
 				continue;
 			}
 
@@ -933,22 +911,16 @@ class WG_Plugin {
 			$metadata_json = wp_json_encode( $metadata );
 			if ( false === $metadata_json ) {
 				wp_delete_file( $target_path );
-				$errors[] = sprintf(
-					/* translators: %s: filename */
-					__( 'Could not encode metadata for %s.', 'wedding-gallery' ),
-					$sanitized_name
-				);
+				$this->collect_rejected_file_label( $rejected_file_labels, $sanitized_name );
+				$error_codes[] = 'processing_failed';
 				continue;
 			}
 
 			$written_meta = file_put_contents( $meta_path, $metadata_json, LOCK_EX );
 			if ( false === $written_meta ) {
 				wp_delete_file( $target_path );
-				$errors[] = sprintf(
-					/* translators: %s: filename */
-					__( 'Could not save metadata for %s.', 'wedding-gallery' ),
-					$sanitized_name
-				);
+				$this->collect_rejected_file_label( $rejected_file_labels, $sanitized_name );
+				$error_codes[] = 'processing_failed';
 				continue;
 			}
 
@@ -958,67 +930,139 @@ class WG_Plugin {
 		if ( $successful > 0 ) {
 			$message = sprintf(
 				/* translators: %d: uploaded files count */
-				_n( '%d file uploaded successfully.', '%d files uploaded successfully.', $successful, 'wedding-gallery' ),
+				_n( 'Thank you. %d file was uploaded successfully.', 'Thank you. %d files were uploaded successfully.', $successful, 'wedding-gallery' ),
 				$successful
 			);
-			if ( ! empty( $errors ) ) {
-				$error_summary = $this->summarize_upload_errors( $errors );
+			if ( ! empty( $error_codes ) ) {
+				$error_summary = $this->summarize_upload_errors( $error_codes, $rejected_file_labels, $max_upload_mb );
 				if ( '' !== $error_summary ) {
-					$message .= ' ' . sprintf(
-						/* translators: %s: short error summary */
-						__( 'Some files were rejected: %s', 'wedding-gallery' ),
-						$error_summary
-					);
+					$message .= ' ' . $error_summary;
 				} else {
-					$message .= ' ' . __( 'Some files were rejected.', 'wedding-gallery' );
+					$message .= ' ' . __( 'Some files could not be uploaded.', 'wedding-gallery' );
 				}
 			}
 			$this->redirect_with_message( $redirect_url, 'success', $message );
 		}
 
-		$error_summary = $this->summarize_upload_errors( $errors );
+		$error_summary = $this->summarize_upload_errors( $error_codes, $rejected_file_labels, $max_upload_mb );
 		if ( '' !== $error_summary ) {
 			$this->redirect_with_message(
 				$redirect_url,
 				'error',
 				sprintf(
-					/* translators: %s: short error summary */
+					/* translators: %s: upload issue summary */
 					__( 'No files were uploaded. %s', 'wedding-gallery' ),
 					$error_summary
 				)
 			);
 		}
 
-		$this->redirect_with_message( $redirect_url, 'error', __( 'No files were uploaded. Please check file type and size.', 'wedding-gallery' ) );
+		$this->redirect_with_message( $redirect_url, 'error', __( 'No files were uploaded. Please check file type and size limits and try again.', 'wedding-gallery' ) );
 	}
 
 	/**
-	 * @param array<int, string> $errors
+	 * @param array<int, string> $error_codes
+	 * @param array<int, string> $rejected_file_labels
+	 * @param int                $max_upload_mb
 	 * @return string
 	 */
-	private function summarize_upload_errors( $errors ) {
-		if ( empty( $errors ) ) {
+	private function summarize_upload_errors( $error_codes, $rejected_file_labels, $max_upload_mb ) {
+		if ( empty( $error_codes ) ) {
 			return '';
 		}
 
-		$unique = array();
-		foreach ( $errors as $error ) {
-			$clean = sanitize_text_field( (string) $error );
-			if ( '' === $clean || in_array( $clean, $unique, true ) ) {
-				continue;
-			}
+		$messages = array();
 
-			$unique[] = $clean;
-			if ( count( $unique ) >= 2 ) {
-				break;
-			}
+		if ( in_array( 'too_large', $error_codes, true ) ) {
+			$messages[] = sprintf(
+				/* translators: %d: max file size in MB */
+				__( 'Some files are larger than %d MB.', 'wedding-gallery' ),
+				$max_upload_mb
+			);
 		}
 
-		if ( empty( $unique ) ) {
+		if ( in_array( 'unsupported_type', $error_codes, true ) ) {
+			$messages[] = __( 'Some files are not supported. Please use JPG, PNG, WEBP, MP4, or MOV.', 'wedding-gallery' );
+		}
+
+		if ( in_array( 'upload_failed', $error_codes, true ) ) {
+			$messages[] = __( 'Some files did not upload. Please try again.', 'wedding-gallery' );
+		}
+
+		if ( in_array( 'processing_failed', $error_codes, true ) ) {
+			$messages[] = __( 'Some files could not be processed securely. Please try again.', 'wedding-gallery' );
+		}
+
+		$messages = array_slice( $messages, 0, 2 );
+		$summary  = implode( ' ', $messages );
+
+		$file_list = $this->summarize_rejected_file_labels( $rejected_file_labels );
+		if ( '' !== $file_list ) {
+			$summary .= ' ' . sprintf(
+				/* translators: %s: short list of filenames */
+				__( 'Please review: %s.', 'wedding-gallery' ),
+				$file_list
+			);
+		}
+
+		return trim( $summary );
+	}
+
+	/**
+	 * @param array<int, string> $rejected_file_labels
+	 * @param string             $candidate
+	 * @return void
+	 */
+	private function collect_rejected_file_label( &$rejected_file_labels, $candidate ) {
+		$label = $this->format_guest_filename_for_message( $candidate );
+		if ( '' === $label || in_array( $label, $rejected_file_labels, true ) ) {
+			return;
+		}
+
+		$rejected_file_labels[] = $label;
+	}
+
+	/**
+	 * @param string $candidate
+	 * @return string
+	 */
+	private function format_guest_filename_for_message( $candidate ) {
+		$clean = sanitize_file_name( (string) $candidate );
+		if ( '' === $clean ) {
 			return '';
 		}
 
-		return implode( ' ', $unique );
+		$max_length = 36;
+		if ( strlen( $clean ) <= $max_length ) {
+			return $clean;
+		}
+
+		$ext  = strtolower( pathinfo( $clean, PATHINFO_EXTENSION ) );
+		$base = (string) pathinfo( $clean, PATHINFO_FILENAME );
+		$base = substr( $base, 0, 28 );
+
+		if ( '' !== $ext ) {
+			return $base . '...' . '.' . $ext;
+		}
+
+		return substr( $clean, 0, $max_length - 3 ) . '...';
+	}
+
+	/**
+	 * @param array<int, string> $rejected_file_labels
+	 * @return string
+	 */
+	private function summarize_rejected_file_labels( $rejected_file_labels ) {
+		if ( empty( $rejected_file_labels ) ) {
+			return '';
+		}
+
+		$sample = array_slice( $rejected_file_labels, 0, 2 );
+		foreach ( $sample as $index => $label ) {
+			$sample[ $index ] = '"' . $label . '"';
+		}
+
+		return implode( ', ', $sample );
 	}
 
 	/**
@@ -1355,7 +1399,7 @@ class WG_Plugin {
 		$settings             = $this->get_settings();
 		$protected_upload_url = $this->get_protected_upload_url();
 		$uploads              = $this->get_uploaded_files();
-		$allowed_text         = '.jpg, .jpeg, .png, .webp, .mp4';
+		$allowed_text         = '.jpg, .jpeg, .png, .webp, .mp4, .mov';
 		$upload_limits        = $this->get_upload_limit_context( absint( $settings['max_upload_mb'] ) );
 		$max_upload_mb        = (int) $upload_limits['configured_mb'];
 		$effective_max_upload_mb = (int) $upload_limits['effective_mb'];
