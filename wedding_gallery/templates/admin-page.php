@@ -372,6 +372,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<p class="description">
 				<?php esc_html_e( 'Print tip: open the QR image and print at high quality for guest signage.', 'wedding-gallery' ); ?>
 			</p>
+			<div style="margin-top: 14px; background: #f6f7f7; border: 1px solid #dcdcde; border-radius: 4px; padding: 12px 14px; max-width: 760px;">
+				<p style="margin: 0 0 8px;"><strong><?php esc_html_e( 'How to use the QR code', 'wedding-gallery' ); ?></strong></p>
+				<ol style="margin: 0; padding-left: 20px;">
+					<li><?php esc_html_e( 'Set the Upload Page URL and click Save Settings to generate the current guest link.', 'wedding-gallery' ); ?></li>
+					<li><?php esc_html_e( 'Use Copy Link for messages, or print the QR code and place it at your wedding.', 'wedding-gallery' ); ?></li>
+					<li><?php esc_html_e( 'Guests scan the QR code on iPhone or Android and upload from camera, photo library/gallery, or files.', 'wedding-gallery' ); ?></li>
+					<li><?php esc_html_e( 'If you regenerate the guest link/token, all older printed QR codes stop working and must be reprinted.', 'wedding-gallery' ); ?></li>
+				</ol>
+			</div>
 		<?php else : ?>
 			<p><?php esc_html_e( 'Set an Upload Page URL to generate the protected link.', 'wedding-gallery' ); ?></p>
 		<?php endif; ?>

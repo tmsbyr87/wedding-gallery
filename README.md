@@ -78,6 +78,20 @@ Do not ship repository noise / handoff artifacts:
 - `.DS_Store`
 - `wedding_gallery/languages/wedding-gallery.pot` (optional source template, not required at runtime)
 
+Language files in release:
+
+- `wedding_gallery/languages/wedding-gallery-de_DE.mo` should be shipped (runtime translations).
+- `wedding_gallery/languages/wedding-gallery-de_DE.po` can also be shipped (useful source/editable translation).
+- `wedding_gallery/languages/wedding-gallery.pot` may be excluded.
+- Important: if building release zips from Git, make sure `.mo/.po` files are committed so they are actually present in the archive.
+
+## Plugin Icon/Banner Assets
+
+Placeholder-ready structure is available in `/assets` for WordPress.org-style plugin presentation files.
+See:
+
+- `assets/README.md` for expected filenames, sizes, and placement.
+
 ## Pilot Handoff Checklist
 
 1. Confirm upload page + shortcode works on mobile.

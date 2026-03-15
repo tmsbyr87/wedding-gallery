@@ -1,0 +1,407 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: wedding-gallery 0.1.0\n"
+"POT-Creation-Date: 2026-03-15 13:45+0100\n"
+"PO-Revision-Date: 2026-03-15 13:55+0100\n"
+"Last-Translator: Wedding Gallery Team\n"
+"Language-Team: German\n"
+"Language: de_DE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Wedding Gallery"
+msgstr "Hochzeitsgalerie"
+
+msgid "Security check failed."
+msgstr "Sicherheitsprüfung fehlgeschlagen."
+
+msgid "Invalid upload token."
+msgstr "Ungültiges Upload-Token."
+
+msgid "Please select at least one file."
+msgstr "Bitte wählen Sie mindestens eine Datei aus."
+
+msgid "Upload encryption is unavailable on this server."
+msgstr "Upload-Verschlüsselung ist auf diesem Server nicht verfügbar."
+
+msgid "One file failed to upload."
+msgstr "Eine Datei konnte nicht hochgeladen werden."
+
+msgid "Invalid upload source detected."
+msgstr "Ungültige Upload-Quelle erkannt."
+
+msgid "Invalid filename detected."
+msgstr "Ungültiger Dateiname erkannt."
+
+msgid "%1$s exceeds maximum upload size of %2$d MB."
+msgstr "%1$s überschreitet die maximale Upload-Größe von %2$d MB."
+
+msgid "%s has an unsupported file extension."
+msgstr "%s hat eine nicht unterstützte Dateiendung."
+
+msgid "%s failed file type validation."
+msgstr "%s hat die Dateityp-Prüfung nicht bestanden."
+
+msgid "%s is not a valid image file."
+msgstr "%s ist keine gültige Bilddatei."
+
+msgid "Could not read %s."
+msgstr "%s konnte nicht gelesen werden."
+
+msgid "Could not securely store %s."
+msgstr "%s konnte nicht sicher gespeichert werden."
+
+msgid "Could not allocate storage for upload."
+msgstr "Es konnte kein Speicherplatz für den Upload reserviert werden."
+
+msgid "Could not save %s."
+msgstr "%s konnte nicht gespeichert werden."
+
+msgid "Could not encode private metadata for %s."
+msgstr "Private Metadaten für %s konnten nicht kodiert werden."
+
+msgid "Could not protect metadata for %s."
+msgstr "Metadaten für %s konnten nicht geschützt werden."
+
+msgid "Could not sign metadata for %s."
+msgstr "Metadaten für %s konnten nicht signiert werden."
+
+msgid "Could not encode metadata for %s."
+msgstr "Metadaten für %s konnten nicht kodiert werden."
+
+msgid "Could not save metadata for %s."
+msgstr "Metadaten für %s konnten nicht gespeichert werden."
+
+msgid "%d file uploaded successfully."
+msgid_plural "%d files uploaded successfully."
+msgstr[0] "%d Datei erfolgreich hochgeladen."
+msgstr[1] "%d Dateien erfolgreich hochgeladen."
+
+msgid "Some files were rejected: %s"
+msgstr "Einige Dateien wurden abgelehnt: %s"
+
+msgid "Some files were rejected."
+msgstr "Einige Dateien wurden abgelehnt."
+
+msgid "No files were uploaded. %s"
+msgstr "Es wurden keine Dateien hochgeladen. %s"
+
+msgid "No files were uploaded. Please check file type and size."
+msgstr "Es wurden keine Dateien hochgeladen. Bitte prüfen Sie Dateityp und -größe."
+
+msgid "You are not allowed to access this page."
+msgstr "Sie sind nicht berechtigt, auf diese Seite zuzugreifen."
+
+msgid "Encrypted file is healthy and downloadable."
+msgstr "Die verschlüsselte Datei ist intakt und kann heruntergeladen werden."
+
+msgid "Metadata file is missing. This upload cannot be decrypted."
+msgstr "Die Metadatendatei fehlt. Dieser Upload kann nicht entschlüsselt werden."
+
+msgid "Metadata looks damaged or unreadable. Download is currently unavailable."
+msgstr "Metadaten scheinen beschädigt oder unlesbar zu sein. Der Download ist derzeit nicht verfügbar."
+
+msgid "Encrypted with a key version not available on this site."
+msgstr "Die Datei wurde mit einer auf dieser Website nicht verfügbaren Schlüsselversion verschlüsselt."
+
+msgid "Could not read encrypted file data."
+msgstr "Verschlüsselte Dateidaten konnten nicht gelesen werden."
+
+msgid "Metadata integrity check failed. File metadata or blob appears modified."
+msgstr "Integritätsprüfung der Metadaten fehlgeschlagen. Metadaten oder Blob scheinen verändert zu sein."
+
+msgid "Private metadata could not be decoded."
+msgstr "Private Metadaten konnten nicht dekodiert werden."
+
+msgid "Decryption check failed. The file or metadata may be corrupted."
+msgstr "Entschlüsselungsprüfung fehlgeschlagen. Die Datei oder Metadaten könnten beschädigt sein."
+
+msgid "Download works, but metadata is from legacy plaintext format and should be re-uploaded for better privacy."
+msgstr "Der Download funktioniert, aber die Metadaten stammen aus einem alten Klartextformat und sollten für besseren Datenschutz neu hochgeladen werden."
+
+msgid "Legacy plaintext file found. It is intentionally not served by this plugin."
+msgstr "Alte Klartextdatei gefunden. Sie wird von diesem Plugin absichtlich nicht bereitgestellt."
+
+msgid "You are not allowed to download files."
+msgstr "Sie sind nicht berechtigt, Dateien herunterzuladen."
+
+msgid "Missing file."
+msgstr "Datei fehlt."
+
+msgid "Invalid security token."
+msgstr "Ungültiges Sicherheitstoken."
+
+msgid "File does not exist."
+msgstr "Datei existiert nicht."
+
+msgid "Invalid file path."
+msgstr "Ungültiger Dateipfad."
+
+msgid "Missing file metadata."
+msgstr "Dateimetadaten fehlen."
+
+msgid "Invalid file metadata."
+msgstr "Ungültige Dateimetadaten."
+
+msgid "Could not decrypt file: unsupported encryption key version."
+msgstr "Datei konnte nicht entschlüsselt werden: Nicht unterstützte Verschlüsselungsschlüsselversion."
+
+msgid "Could not read file."
+msgstr "Datei konnte nicht gelesen werden."
+
+msgid "Could not decrypt file. Metadata integrity check failed."
+msgstr "Datei konnte nicht entschlüsselt werden. Integritätsprüfung der Metadaten fehlgeschlagen."
+
+msgid "Could not decrypt file. Metadata may be invalid or the key may have changed."
+msgstr "Datei konnte nicht entschlüsselt werden. Metadaten sind möglicherweise ungültig oder der Schlüssel hat sich geändert."
+
+msgid "Plaintext legacy files are not served by the plugin. Please migrate them to encrypted storage."
+msgstr "Alte Klartextdateien werden vom Plugin nicht bereitgestellt. Bitte migrieren Sie sie in den verschlüsselten Speicher."
+
+msgid "Settings saved."
+msgstr "Einstellungen gespeichert."
+
+msgid "Settings saved. Max upload size was clamped to %d MB to match server/runtime safety limits."
+msgstr "Einstellungen gespeichert. Die maximale Upload-Größe wurde auf %d MB begrenzt, um den Server-/Laufzeitsicherheitsgrenzen zu entsprechen."
+
+msgid "Current configured max is %1$d MB, but this server can safely handle up to %2$d MB. Uploads are limited to the lower value."
+msgstr "Der aktuell konfigurierte Maximalwert ist %1$d MB, aber dieser Server kann sicher bis zu %2$d MB verarbeiten. Uploads sind auf den niedrigeren Wert begrenzt."
+
+msgid "Detected %d legacy plaintext file(s). They are no longer served by this plugin. Migrate or remove them from uploads/wedding-gallery."
+msgstr "%d alte Klartextdatei(en) erkannt. Sie werden von diesem Plugin nicht mehr bereitgestellt. Migrieren oder entfernen Sie sie aus uploads/wedding-gallery."
+
+msgid "Encryption key status is unhealthy. Media uploads/downloads may fail until the key configuration is repaired."
+msgstr "Der Status des Verschlüsselungsschlüssels ist nicht in Ordnung. Medien-Uploads/-Downloads können fehlschlagen, bis die Schlüsselkonfiguration repariert ist."
+
+msgid "%d encrypted file(s) are missing metadata. Those files cannot be downloaded until metadata is restored."
+msgstr "Bei %d verschlüsselten Datei(en) fehlen Metadaten. Diese Dateien können erst heruntergeladen werden, wenn die Metadaten wiederhergestellt sind."
+
+msgid "%d file(s) have damaged or unreadable metadata. Download may fail until repaired from backup."
+msgstr "%d Datei(en) haben beschädigte oder unlesbare Metadaten. Downloads können fehlschlagen, bis sie aus dem Backup repariert sind."
+
+msgid "%d file(s) failed metadata integrity checks. They may have been modified or corrupted."
+msgstr "Bei %d Datei(en) ist die Metadaten-Integritätsprüfung fehlgeschlagen. Sie wurden möglicherweise verändert oder beschädigt."
+
+msgid "%d file(s) require an encryption key version that is not available on this site."
+msgstr "%d Datei(en) benötigen eine Verschlüsselungsschlüsselversion, die auf dieser Website nicht verfügbar ist."
+
+msgid "%d file(s) still use legacy plaintext metadata. They remain downloadable, but re-uploading improves privacy."
+msgstr "%d Datei(en) verwenden noch alte Klartext-Metadaten. Sie können weiterhin heruntergeladen werden, aber ein erneuter Upload verbessert den Datenschutz."
+
+msgid "%d file(s) failed the decryption health check. The encrypted file or metadata may be corrupted."
+msgstr "Bei %d Datei(en) ist die Entschlüsselungsprüfung fehlgeschlagen. Die verschlüsselte Datei oder die Metadaten könnten beschädigt sein."
+
+msgid "Pilot Handoff Notes"
+msgstr "Hinweise zur Pilot-Übergabe"
+
+msgid "Backup and restore database + uploads/wedding-gallery together to keep media decryptable."
+msgstr "Datenbank und uploads/wedding-gallery immer gemeinsam sichern und wiederherstellen, damit Medien entschlüsselbar bleiben."
+
+msgid "Regenerating the guest token invalidates previous guest links and printed QR codes."
+msgstr "Das Neugenerieren des Gast-Tokens macht frühere Gast-Links und gedruckte QR-Codes ungültig."
+
+msgid "Cleanup On Uninstall runs only when the plugin is uninstalled, not when it is deactivated."
+msgstr "„Bereinigung bei Deinstallation“ wird nur bei Deinstallation ausgeführt, nicht bei Deaktivierung."
+
+msgid "On shared hosting, runtime and memory limits can reduce effective max upload size."
+msgstr "Auf Shared Hosting können Laufzeit- und Speichergrenzen die effektive maximale Upload-Größe verringern."
+
+msgid "Settings"
+msgstr "Einstellungen"
+
+msgid "Upload Page URL"
+msgstr "Upload-Seiten-URL"
+
+msgid "Add shortcode %s to this page."
+msgstr "Fügen Sie den Shortcode %s zu dieser Seite hinzu."
+
+msgid "Access Token"
+msgstr "Zugriffstoken"
+
+msgid "Regenerate Guest Link"
+msgstr "Gast-Link neu generieren"
+
+msgid "Anyone with the protected link can upload. Regenerating token invalidates old links and QR prints."
+msgstr "Jeder mit dem geschützten Link kann hochladen. Das Neugenerieren des Tokens macht alte Links und QR-Ausdrucke ungültig."
+
+msgid "Max Upload Size (MB)"
+msgstr "Maximale Upload-Größe (MB)"
+
+msgid "Allowed file types: %1$s. Effective per-file limit: %2$d MB."
+msgstr "Erlaubte Dateitypen: %1$s. Effektives Limit pro Datei: %2$d MB."
+
+msgid "Runtime limits (MB): upload_max_filesize=%1$d, post_max_size=%2$d, memory_limit=%3$d, memory-safe ceiling=%4$d."
+msgstr "Laufzeitgrenzen (MB): upload_max_filesize=%1$d, post_max_size=%2$d, memory_limit=%3$d, speichersicheres Limit=%4$d."
+
+msgid "Cleanup On Uninstall"
+msgstr "Bereinigung bei Deinstallation"
+
+msgid "Yes, permanently delete wedding media + metadata from uploads/wedding-gallery when uninstalling this plugin."
+msgstr "Ja, Hochzeitsmedien + Metadaten aus uploads/wedding-gallery beim Deinstallieren dieses Plugins dauerhaft löschen."
+
+msgid "Leave unchecked to keep files on disk after uninstall."
+msgstr "Deaktiviert lassen, um Dateien nach der Deinstallation auf der Festplatte zu behalten."
+
+msgid "This setting has no effect on normal plugin deactivation."
+msgstr "Diese Einstellung hat keine Auswirkung auf die normale Plugin-Deaktivierung."
+
+msgid "Encryption Key"
+msgstr "Verschlüsselungsschlüssel"
+
+msgid "Status: %1$s | Version: %2$d | Fingerprint: %3$s"
+msgstr "Status: %1$s | Version: %2$d | Fingerabdruck: %3$s"
+
+msgid "Healthy"
+msgstr "In Ordnung"
+
+msgid "Problem"
+msgstr "Problem"
+
+msgid "Backup requirement: keep database/plugin options and uploads/wedding-gallery together in the same backup/restore set. Restoring only one can make media undecryptable."
+msgstr "Backup-Anforderung: Datenbank/Plugin-Optionen und uploads/wedding-gallery müssen im selben Backup-/Restore-Satz enthalten sein. Die Wiederherstellung nur einer Seite kann Medien unentschlüsselbar machen."
+
+msgid "Operational tip: verify restores on a staging site before the event date."
+msgstr "Betriebstipp: Wiederherstellungen vor dem Eventdatum auf einer Staging-Seite prüfen."
+
+msgid "Save Settings"
+msgstr "Einstellungen speichern"
+
+msgid "Protected Upload URL (QR Target)"
+msgstr "Geschützte Upload-URL (QR-Ziel)"
+
+msgid "Guest Upload Link"
+msgstr "Gast-Upload-Link"
+
+msgid "Copy Link"
+msgstr "Link kopieren"
+
+msgid "QR Code"
+msgstr "QR-Code"
+
+msgid "Guest upload QR code"
+msgstr "QR-Code für Gast-Upload"
+
+msgid "View QR Code"
+msgstr "QR-Code anzeigen"
+
+msgid "Download QR PNG"
+msgstr "QR-PNG herunterladen"
+
+msgid "QR code is generated locally in your browser. The protected upload URL is not sent to third-party QR services."
+msgstr "Der QR-Code wird lokal in Ihrem Browser erzeugt. Die geschützte Upload-URL wird nicht an Drittanbieter-QR-Dienste gesendet."
+
+msgid "Print tip: open the QR image and print at high quality for guest signage."
+msgstr "Drucktipp: Öffnen Sie das QR-Bild und drucken Sie es in hoher Qualität für die Gäste-Beschilderung."
+
+msgid "Set an Upload Page URL to generate the protected link."
+msgstr "Legen Sie eine Upload-Seiten-URL fest, um den geschützten Link zu erzeugen."
+
+msgid "Uploaded Files"
+msgstr "Hochgeladene Dateien"
+
+msgid "No uploads yet."
+msgstr "Noch keine Uploads."
+
+msgid "Filename"
+msgstr "Dateiname"
+
+msgid "Type"
+msgstr "Typ"
+
+msgid "Size"
+msgstr "Größe"
+
+msgid "Uploaded"
+msgstr "Hochgeladen"
+
+msgid "Health"
+msgstr "Status"
+
+msgid "Action"
+msgstr "Aktion"
+
+msgid "Unknown"
+msgstr "Unbekannt"
+
+msgid "Missing Metadata"
+msgstr "Fehlende Metadaten"
+
+msgid "Metadata Damaged"
+msgstr "Metadaten beschädigt"
+
+msgid "Integrity Failed"
+msgstr "Integritätsprüfung fehlgeschlagen"
+
+msgid "Key Version Mismatch"
+msgstr "Schlüsselversionskonflikt"
+
+msgid "Decrypt Failed"
+msgstr "Entschlüsselung fehlgeschlagen"
+
+msgid "Legacy Metadata"
+msgstr "Alte Metadaten"
+
+msgid "Legacy Plaintext"
+msgstr "Alter Klartext"
+
+msgid "Download"
+msgstr "Herunterladen"
+
+msgid "Unavailable"
+msgstr "Nicht verfügbar"
+
+msgid "Thank you, upload complete."
+msgstr "Vielen Dank, Upload abgeschlossen."
+
+msgid "Upload could not be completed."
+msgstr "Upload konnte nicht abgeschlossen werden."
+
+msgid "Protected guest upload"
+msgstr "Geschützter Gast-Upload"
+
+msgid "This page is only available through the wedding QR link."
+msgstr "Diese Seite ist nur über den Hochzeits-QR-Link verfügbar."
+
+msgid "Share your wedding moments"
+msgstr "Teilen Sie Ihre Hochzeitsmomente"
+
+msgid "Select photos or videos from your phone and upload them in one step."
+msgstr "Wählen Sie Fotos oder Videos von Ihrem Handy und laden Sie sie in einem Schritt hoch."
+
+msgid "Choose Photos or Videos"
+msgstr "Fotos oder Videos auswählen"
+
+msgid "No files selected yet."
+msgstr "Noch keine Dateien ausgewählt."
+
+msgid "Allowed: %1$s | Max per file: %2$d MB"
+msgstr "Erlaubt: %1$s | Maximal pro Datei: %2$d MB"
+
+msgid "On iPhone/Android you can choose camera, photo library/gallery, or files."
+msgstr "Auf iPhone/Android können Sie Kamera, Fotomediathek/Galerie oder Dateien wählen."
+
+msgid "You can select multiple files at once."
+msgstr "Sie können mehrere Dateien gleichzeitig auswählen."
+
+msgid "Upload Now"
+msgstr "Jetzt hochladen"
+
+msgid "Preparing upload..."
+msgstr "Upload wird vorbereitet..."
+
+msgid "files selected:"
+msgstr "Dateien ausgewählt:"
+
+msgid "Please choose at least one photo or video."
+msgstr "Bitte wählen Sie mindestens ein Foto oder Video aus."
+
+msgid "Uploading... Please keep this page open."
+msgstr "Wird hochgeladen... Bitte lassen Sie diese Seite geöffnet."
+
+msgid "Upload in progress..."
+msgstr "Upload läuft..."
+
+msgid "Almost done..."
+msgstr "Fast fertig..."

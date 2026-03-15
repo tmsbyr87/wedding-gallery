@@ -1,0 +1,637 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-15 13:45+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: wedding_gallery/includes/class-wg-plugin.php:681
+#: wedding_gallery/includes/class-wg-plugin.php:682
+#: wedding_gallery/templates/admin-page.php:25
+msgid "Wedding Gallery"
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:743
+msgid "Security check failed."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:749
+msgid "Invalid upload token."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:753
+#: wedding_gallery/includes/class-wg-plugin.php:758
+msgid "Please select at least one file."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:769
+msgid "Upload encryption is unavailable on this server."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:783
+msgid "One file failed to upload."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:788
+msgid "Invalid upload source detected."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:794
+msgid "Invalid filename detected."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:801
+#, php-format
+msgid "%1$s exceeds maximum upload size of %2$d MB."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:812
+#, php-format
+msgid "%s has an unsupported file extension."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:822
+#, php-format
+msgid "%s failed file type validation."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:833
+#, php-format
+msgid "%s is not a valid image file."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:844
+#, php-format
+msgid "Could not read %s."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:854
+#, php-format
+msgid "Could not securely store %s."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:862
+msgid "Could not allocate storage for upload."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:873
+#, php-format
+msgid "Could not save %s."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:890
+#, php-format
+msgid "Could not encode private metadata for %s."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:901
+#, php-format
+msgid "Could not protect metadata for %s."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:925
+#, php-format
+msgid "Could not sign metadata for %s."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:938
+#, php-format
+msgid "Could not encode metadata for %s."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:949
+#, php-format
+msgid "Could not save metadata for %s."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:961
+#, php-format
+msgid "%d file uploaded successfully."
+msgid_plural "%d files uploaded successfully."
+msgstr[0] ""
+msgstr[1] ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:969
+#, php-format
+msgid "Some files were rejected: %s"
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:973
+msgid "Some files were rejected."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:986
+#, php-format
+msgid "No files were uploaded. %s"
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:992
+msgid "No files were uploaded. Please check file type and size."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:1048
+#: wedding_gallery/includes/class-wg-plugin.php:1350
+msgid "You are not allowed to access this page."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:1202
+msgid "Encrypted file is healthy and downloadable."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:1213
+msgid "Metadata file is missing. This upload cannot be decrypted."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:1217
+#: wedding_gallery/includes/class-wg-plugin.php:1242
+msgid ""
+"Metadata looks damaged or unreadable. Download is currently unavailable."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:1223
+#: wedding_gallery/includes/class-wg-plugin.php:1236
+#: wedding_gallery/includes/class-wg-plugin.php:1251
+msgid "Encrypted with a key version not available on this site."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:1229
+msgid "Could not read encrypted file data."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:1239
+msgid ""
+"Metadata integrity check failed. File metadata or blob appears modified."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:1254
+msgid "Private metadata could not be decoded."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:1261
+msgid "Decryption check failed. The file or metadata may be corrupted."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:1265
+msgid ""
+"Download works, but metadata is from legacy plaintext format and should be "
+"re-uploaded for better privacy."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:1304
+msgid ""
+"Legacy plaintext file found. It is intentionally not served by this plugin."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:1378
+msgid "You are not allowed to download files."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:1383
+msgid "Missing file."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:1388
+msgid "Invalid security token."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:1395
+msgid "File does not exist."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:1399
+msgid "Invalid file path."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:1407
+msgid "Missing file metadata."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:1412
+#: wedding_gallery/includes/class-wg-plugin.php:1433
+#: wedding_gallery/includes/class-wg-plugin.php:1442
+msgid "Invalid file metadata."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:1417
+#: wedding_gallery/includes/class-wg-plugin.php:1428
+#: wedding_gallery/includes/class-wg-plugin.php:1440
+msgid "Could not decrypt file: unsupported encryption key version."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:1422
+msgid "Could not read file."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:1431
+msgid "Could not decrypt file. Metadata integrity check failed."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:1447
+msgid ""
+"Could not decrypt file. Metadata may be invalid or the key may have changed."
+msgstr ""
+
+#: wedding_gallery/includes/class-wg-plugin.php:1471
+msgid ""
+"Plaintext legacy files are not served by the plugin. Please migrate them to "
+"encrypted storage."
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:29
+msgid "Settings saved."
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:37
+#, php-format
+msgid ""
+"Settings saved. Max upload size was clamped to %d MB to match server/runtime "
+"safety limits."
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:51
+#, php-format
+msgid ""
+"Current configured max is %1$d MB, but this server can safely handle up to "
+"%2$d MB. Uploads are limited to the lower value."
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:66
+#, php-format
+msgid ""
+"Detected %d legacy plaintext file(s). They are no longer served by this "
+"plugin. Migrate or remove them from uploads/wedding-gallery."
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:76
+msgid ""
+"Encryption key status is unhealthy. Media uploads/downloads may fail until "
+"the key configuration is repaired."
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:86
+#, php-format
+msgid ""
+"%d encrypted file(s) are missing metadata. Those files cannot be downloaded "
+"until metadata is restored."
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:100
+#, php-format
+msgid ""
+"%d file(s) have damaged or unreadable metadata. Download may fail until "
+"repaired from backup."
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:114
+#, php-format
+msgid ""
+"%d file(s) failed metadata integrity checks. They may have been modified or "
+"corrupted."
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:128
+#, php-format
+msgid ""
+"%d file(s) require an encryption key version that is not available on this "
+"site."
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:142
+#, php-format
+msgid ""
+"%d file(s) still use legacy plaintext metadata. They remain downloadable, "
+"but re-uploading improves privacy."
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:156
+#, php-format
+msgid ""
+"%d file(s) failed the decryption health check. The encrypted file or "
+"metadata may be corrupted."
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:186
+msgid "Pilot Handoff Notes"
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:188
+msgid ""
+"Backup and restore database + uploads/wedding-gallery together to keep media "
+"decryptable."
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:189
+msgid ""
+"Regenerating the guest token invalidates previous guest links and printed QR "
+"codes."
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:190
+msgid ""
+"Cleanup On Uninstall runs only when the plugin is uninstalled, not when it "
+"is deactivated."
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:191
+msgid ""
+"On shared hosting, runtime and memory limits can reduce effective max upload "
+"size."
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:195
+msgid "Settings"
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:204
+msgid "Upload Page URL"
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:219
+#, php-format
+msgid "Add shortcode %s to this page."
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:228
+msgid "Access Token"
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:240
+msgid "Regenerate Guest Link"
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:244
+msgid ""
+"Anyone with the protected link can upload. Regenerating token invalidates "
+"old links and QR prints."
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:250
+msgid "Max Upload Size (MB)"
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:265
+#, php-format
+msgid "Allowed file types: %1$s. Effective per-file limit: %2$d MB."
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:275
+#, php-format
+msgid ""
+"Runtime limits (MB): upload_max_filesize=%1$d, post_max_size=%2$d, "
+"memory_limit=%3$d, memory-safe ceiling=%4$d."
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:287
+msgid "Cleanup On Uninstall"
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:298
+msgid ""
+"Yes, permanently delete wedding media + metadata from uploads/wedding-"
+"gallery when uninstalling this plugin."
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:301
+msgid "Leave unchecked to keep files on disk after uninstall."
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:304
+msgid "This setting has no effect on normal plugin deactivation."
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:309
+msgid "Encryption Key"
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:315
+#, php-format
+msgid "Status: %1$s | Version: %2$d | Fingerprint: %3$s"
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:316
+#: wedding_gallery/templates/admin-page.php:402
+msgid "Healthy"
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:316
+msgid "Problem"
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:323
+msgid ""
+"Backup requirement: keep database/plugin options and uploads/wedding-gallery "
+"together in the same backup/restore set. Restoring only one can make media "
+"undecryptable."
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:326
+msgid ""
+"Operational tip: verify restores on a staging site before the event date."
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:333
+msgid "Save Settings"
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:336
+msgid "Protected Upload URL (QR Target)"
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:342
+msgid "Guest Upload Link"
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:352
+msgid "Copy Link"
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:355
+msgid "QR Code"
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:359
+msgid "Guest upload QR code"
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:363
+msgid "View QR Code"
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:366
+msgid "Download QR PNG"
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:370
+msgid ""
+"QR code is generated locally in your browser. The protected upload URL is "
+"not sent to third-party QR services."
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:373
+msgid ""
+"Print tip: open the QR image and print at high quality for guest signage."
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:376
+msgid "Set an Upload Page URL to generate the protected link."
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:379
+msgid "Uploaded Files"
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:381
+msgid "No uploads yet."
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:386
+msgid "Filename"
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:387
+msgid "Type"
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:388
+msgid "Size"
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:389
+msgid "Uploaded"
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:390
+msgid "Health"
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:391
+msgid "Action"
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:398
+msgid "Unknown"
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:406
+msgid "Missing Metadata"
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:410
+msgid "Metadata Damaged"
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:414
+msgid "Integrity Failed"
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:418
+msgid "Key Version Mismatch"
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:422
+msgid "Decrypt Failed"
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:426
+msgid "Legacy Metadata"
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:430
+msgid "Legacy Plaintext"
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:459
+msgid "Download"
+msgstr ""
+
+#: wedding_gallery/templates/admin-page.php:462
+msgid "Unavailable"
+msgstr ""
+
+#: wedding_gallery/templates/frontend-upload.php:21
+msgid "Thank you, upload complete."
+msgstr ""
+
+#: wedding_gallery/templates/frontend-upload.php:21
+msgid "Upload could not be completed."
+msgstr ""
+
+#: wedding_gallery/templates/frontend-upload.php:204
+msgid "Protected guest upload"
+msgstr ""
+
+#: wedding_gallery/templates/frontend-upload.php:205
+msgid "This page is only available through the wedding QR link."
+msgstr ""
+
+#: wedding_gallery/templates/frontend-upload.php:210
+msgid "Share your wedding moments"
+msgstr ""
+
+#: wedding_gallery/templates/frontend-upload.php:211
+msgid "Select photos or videos from your phone and upload them in one step."
+msgstr ""
+
+#: wedding_gallery/templates/frontend-upload.php:238
+msgid "Choose Photos or Videos"
+msgstr ""
+
+#: wedding_gallery/templates/frontend-upload.php:241
+#: wedding_gallery/templates/frontend-upload.php:321
+msgid "No files selected yet."
+msgstr ""
+
+#: wedding_gallery/templates/frontend-upload.php:249
+#, php-format
+msgid "Allowed: %1$s | Max per file: %2$d MB"
+msgstr ""
+
+#: wedding_gallery/templates/frontend-upload.php:255
+msgid ""
+"On iPhone/Android you can choose camera, photo library/gallery, or files."
+msgstr ""
+
+#: wedding_gallery/templates/frontend-upload.php:256
+msgid "You can select multiple files at once."
+msgstr ""
+
+#: wedding_gallery/templates/frontend-upload.php:260
+msgid "Upload Now"
+msgstr ""
+
+#: wedding_gallery/templates/frontend-upload.php:267
+msgid "Preparing upload..."
+msgstr ""
+
+#: wedding_gallery/templates/frontend-upload.php:334
+msgid "files selected:"
+msgstr ""
+
+#: wedding_gallery/templates/frontend-upload.php:360
+msgid "Please choose at least one photo or video."
+msgstr ""
+
+#: wedding_gallery/templates/frontend-upload.php:366
+msgid "Uploading... Please keep this page open."
+msgstr ""
+
+#: wedding_gallery/templates/frontend-upload.php:368
+msgid "Upload in progress..."
+msgstr ""
+
+#: wedding_gallery/templates/frontend-upload.php:371
+msgid "Almost done..."
+msgstr ""
