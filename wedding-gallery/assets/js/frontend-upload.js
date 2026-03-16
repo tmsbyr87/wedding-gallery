@@ -13,6 +13,8 @@
 	const progressFill = document.getElementById('wg_progress_fill');
 	const progressText = document.getElementById('wg_progress_text');
 	const clientAlert = document.getElementById('wg-client-alert');
+	let progressStepTimers = [];
+	let currentProgress = 0;
 
 	function t(key, fallback) {
 		if (Object.prototype.hasOwnProperty.call(i18n, key) && i18n[key]) {
@@ -42,8 +44,20 @@
 			return;
 		}
 		progressWrap.hidden = false;
-		progressFill.style.width = Math.max(0, Math.min(100, percent)) + '%';
+		const normalizedPercent = Math.max(0, Math.min(100, percent));
+		currentProgress = Math.max(currentProgress, normalizedPercent);
+		progressFill.style.width = currentProgress + '%';
 		progressText.textContent = label;
+	}
+
+	function clearProgressTimers() {
+		if (!progressStepTimers.length) {
+			return;
+		}
+		progressStepTimers.forEach(function (timerId) {
+			window.clearTimeout(timerId);
+		});
+		progressStepTimers = [];
 	}
 
 	function updateFileSummary() {
@@ -71,17 +85,29 @@
 	}
 
 	function setUploadUiBusy(isBusy) {
+		form.setAttribute('aria-busy', isBusy ? 'true' : 'false');
+
 		if (submitBtn) {
 			submitBtn.disabled = isBusy;
+			submitBtn.setAttribute('aria-disabled', isBusy ? 'true' : 'false');
 		}
 		if (pickerBtn) {
 			pickerBtn.classList.toggle('is-disabled', isBusy);
+			pickerBtn.setAttribute('aria-disabled', isBusy ? 'true' : 'false');
+		}
+		if (fileInput) {
+			fileInput.disabled = isBusy;
 		}
 	}
 
 	if (fileInput) {
-		fileInput.addEventListener('change', updateFileSummary);
+		fileInput.addEventListener('change', function () {
+			clearClientError();
+			updateFileSummary();
+		});
 	}
+
+	setUploadUiBusy(false);
 
 	form.addEventListener('submit', function (event) {
 		if (form.dataset.wgSubmitting === '1') {
@@ -99,14 +125,24 @@
 
 		form.dataset.wgSubmitting = '1';
 		setUploadUiBusy(true);
+		clearProgressTimers();
+		currentProgress = 0;
 		setProgress(12, t('uploadingKeepOpen', 'Uploading... Please keep this page open.'));
 
-		window.setTimeout(function () {
+		progressStepTimers.push(window.setTimeout(function () {
 			setProgress(42, t('uploadingProgress', 'Upload in progress...'));
-		}, 600);
+		}, 600));
 
-		window.setTimeout(function () {
+		progressStepTimers.push(window.setTimeout(function () {
 			setProgress(76, t('uploadingAlmostDone', 'Almost done...'));
-		}, 1800);
+		}, 1800));
+	});
+
+	window.addEventListener('pageshow', function () {
+		if (form.dataset.wgSubmitting === '1') {
+			form.dataset.wgSubmitting = '0';
+		}
+		clearProgressTimers();
+		setUploadUiBusy(false);
 	});
 })();

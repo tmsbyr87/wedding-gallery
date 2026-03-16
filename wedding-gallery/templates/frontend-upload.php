@@ -22,44 +22,53 @@ $wedding_gallery_status_title = 'success' === $status ? __( 'Thank you, upload c
 ?>
 <style>
 .wg-upload-wrap {
-	max-width: 560px;
+	max-width: 620px;
 	margin: 0 auto;
-	padding: 16px;
+	padding-top: calc(16px + env(safe-area-inset-top));
+	padding-right: max(16px, env(safe-area-inset-right));
+	padding-bottom: calc(20px + env(safe-area-inset-bottom));
+	padding-left: max(16px, env(safe-area-inset-left));
 	font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
 	color: #2d2433;
+	font-size: 16px;
+	line-height: 1.5;
 }
 
 .wg-upload-card {
 	background: linear-gradient(180deg, #fffdf9 0%, #fff7f8 100%);
 	border: 1px solid #f1dde2;
-	border-radius: 18px;
-	padding: 20px 16px;
+	border-radius: 20px;
+	padding: 24px 18px;
 	box-shadow: 0 10px 28px rgba(71, 27, 43, 0.08);
 }
 
 .wg-upload-title {
-	margin: 0 0 6px;
-	font-size: 1.4rem;
-	line-height: 1.2;
+	margin: 0 0 8px;
+	font-size: clamp(1.55rem, 6vw, 2rem);
+	line-height: 1.14;
+	letter-spacing: -0.01em;
 	color: #4f2a3a;
 }
 
 .wg-upload-subtitle {
-	margin: 0 0 18px;
+	margin: 0 0 22px;
 	color: #6b5963;
-	font-size: 0.96rem;
+	font-size: clamp(1rem, 4.3vw, 1.12rem);
+	line-height: 1.5;
 }
 
 .wg-alert {
-	border-radius: 12px;
-	padding: 12px 14px;
-	margin-bottom: 14px;
-	font-size: 0.95rem;
+	border-radius: 14px;
+	padding: 14px 16px;
+	margin-bottom: 16px;
+	font-size: 1rem;
+	line-height: 1.5;
 }
 
 .wg-alert strong {
 	display: block;
-	margin-bottom: 4px;
+	margin-bottom: 6px;
+	font-size: 1.02rem;
 }
 
 .wg-alert-success {
@@ -83,49 +92,70 @@ $wedding_gallery_status_title = 'success' === $status ? __( 'Thank you, upload c
 }
 
 .wg-picker-btn {
-	display: block;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	width: 100%;
-	padding: 18px 16px;
+	min-height: 58px;
+	padding: 14px 16px;
 	border: 0;
 	border-radius: 14px;
 	text-align: center;
-	font-size: 1.06rem;
-	font-weight: 600;
+	font-size: clamp(1.08rem, 4.7vw, 1.2rem);
+	font-weight: 700;
+	line-height: 1.2;
+	letter-spacing: 0.01em;
 	background: #a33b63;
 	color: #ffffff;
 	cursor: pointer;
 	box-sizing: border-box;
+	-webkit-tap-highlight-color: transparent;
+	touch-action: manipulation;
+	transition: background-color 0.2s ease, transform 0.08s ease, box-shadow 0.2s ease;
 }
 
 .wg-picker-btn:hover,
-.wg-picker-btn:focus {
+.wg-picker-btn:focus-visible {
 	background: #8e3258;
+	box-shadow: 0 0 0 3px rgba(163, 59, 99, 0.22);
+}
+
+.wg-picker-btn:active {
+	transform: translateY(1px);
 }
 
 .wg-picker-btn.is-disabled {
 	opacity: 0.7;
 	cursor: not-allowed;
+	pointer-events: none;
 }
 
 .wg-file-summary {
-	margin: 10px 2px 14px;
-	font-size: 0.93rem;
+	margin: 14px 2px 16px;
+	font-size: 1rem;
+	line-height: 1.45;
 	color: #5f4f58;
 	word-break: break-word;
 }
 
 .wg-hint-list {
-	margin: 0 0 14px;
-	padding: 12px 14px;
+	margin: 0 0 16px;
+	padding: 14px 16px;
 	background: rgba(255, 255, 255, 0.75);
 	border: 1px solid #ecd8de;
-	border-radius: 12px;
-	font-size: 0.93rem;
+	border-radius: 14px;
+	font-size: 0.99rem;
+	line-height: 1.55;
 	color: #5b4b54;
 }
 
 .wg-hint-list p {
-	margin: 0 0 6px;
+	margin: 0 0 8px;
+}
+
+.wg-hint-list .wg-hint-primary {
+	font-weight: 700;
+	color: #4f2a3a;
 }
 
 .wg-hint-list p:last-child {
@@ -134,19 +164,30 @@ $wedding_gallery_status_title = 'success' === $status ? __( 'Thank you, upload c
 
 .wg-submit-btn {
 	width: 100%;
-	padding: 16px;
+	min-height: 58px;
+	padding: 14px 16px;
 	border: 0;
 	border-radius: 14px;
 	background: #2c6f56;
 	color: #ffffff;
-	font-size: 1.05rem;
+	font-size: clamp(1.1rem, 4.9vw, 1.22rem);
+	line-height: 1.2;
+	letter-spacing: 0.01em;
 	font-weight: 700;
 	cursor: pointer;
+	-webkit-tap-highlight-color: transparent;
+	touch-action: manipulation;
+	transition: background-color 0.2s ease, transform 0.08s ease, box-shadow 0.2s ease;
 }
 
 .wg-submit-btn:hover,
-.wg-submit-btn:focus {
+.wg-submit-btn:focus-visible {
 	background: #245c47;
+	box-shadow: 0 0 0 3px rgba(44, 111, 86, 0.22);
+}
+
+.wg-submit-btn:active {
+	transform: translateY(1px);
 }
 
 .wg-submit-btn[disabled] {
@@ -155,16 +196,16 @@ $wedding_gallery_status_title = 'success' === $status ? __( 'Thank you, upload c
 }
 
 .wg-progress-wrap {
-	margin-top: 14px;
-	padding: 12px 14px;
+	margin-top: 16px;
+	padding: 14px 16px;
 	background: #ffffff;
 	border: 1px solid #ecd8de;
-	border-radius: 12px;
+	border-radius: 14px;
 }
 
 .wg-progress-bar-track {
 	position: relative;
-	height: 10px;
+	height: 12px;
 	border-radius: 999px;
 	background: #f3e6ea;
 	overflow: hidden;
@@ -182,18 +223,41 @@ $wedding_gallery_status_title = 'success' === $status ? __( 'Thank you, upload c
 }
 
 .wg-progress-text {
-	margin: 8px 0 0;
-	font-size: 0.9rem;
+	margin: 10px 0 0;
+	font-size: 0.98rem;
+	line-height: 1.45;
 	color: #5f4f58;
+}
+
+@media (max-width: 380px) {
+	.wg-upload-wrap {
+		padding-top: calc(12px + env(safe-area-inset-top));
+		padding-right: max(12px, env(safe-area-inset-right));
+		padding-bottom: calc(16px + env(safe-area-inset-bottom));
+		padding-left: max(12px, env(safe-area-inset-left));
+	}
+
+	.wg-upload-card {
+		padding: 20px 14px;
+	}
 }
 
 @media (min-width: 680px) {
 	.wg-upload-wrap {
-		padding: 24px;
+		padding-top: 24px;
+		padding-right: 24px;
+		padding-bottom: 24px;
+		padding-left: 24px;
 	}
 
 	.wg-upload-card {
-		padding: 24px;
+		padding: 28px 24px;
+	}
+
+	.wg-picker-btn,
+	.wg-submit-btn {
+		min-height: 56px;
+		font-size: 1.08rem;
 	}
 }
 </style>
@@ -219,7 +283,7 @@ $wedding_gallery_status_title = 'success' === $status ? __( 'Thank you, upload c
 
 			<div id="wg-client-alert" class="wg-alert wg-alert-error" style="display:none;" role="alert" aria-live="assertive"></div>
 
-			<form id="wg-upload-form" action="<?php echo esc_url( $action_url ); ?>" method="post" enctype="multipart/form-data">
+			<form id="wg-upload-form" action="<?php echo esc_url( $action_url ); ?>" method="post" enctype="multipart/form-data" aria-busy="false">
 				<input type="hidden" name="action" value="wg_upload" />
 				<input type="hidden" id="wg_redirect_to" name="redirect_to" value="<?php echo esc_url( $redirect_url ); ?>" />
 				<input type="hidden" name="<?php echo esc_attr( WG_Plugin::TOKEN_QUERY_ARG ); ?>" value="<?php echo esc_attr( $authorized_token ); ?>" />
@@ -242,7 +306,7 @@ $wedding_gallery_status_title = 'success' === $status ? __( 'Thank you, upload c
 				</p>
 
 				<div class="wg-hint-list">
-					<p>
+					<p class="wg-hint-primary">
 						<?php
 						printf(
 							/* translators: 1: allowed file types, 2: max file size in MB */
