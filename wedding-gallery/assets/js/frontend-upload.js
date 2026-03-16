@@ -95,9 +95,6 @@
 			pickerBtn.classList.toggle('is-disabled', isBusy);
 			pickerBtn.setAttribute('aria-disabled', isBusy ? 'true' : 'false');
 		}
-		if (fileInput) {
-			fileInput.disabled = isBusy;
-		}
 	}
 
 	if (fileInput) {
