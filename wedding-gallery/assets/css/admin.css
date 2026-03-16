@@ -77,6 +77,10 @@
 	margin: 8px 0 14px;
 }
 
+.wg-admin-wrap .wg-inline-refresh-form {
+	margin: 10px 0 14px;
+}
+
 .wg-admin-wrap .wg-media-table .check-column {
 	width: 36px;
 }

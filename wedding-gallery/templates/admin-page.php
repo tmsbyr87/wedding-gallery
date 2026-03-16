@@ -17,6 +17,9 @@
  * - int    $notice_count
  * - int    $notice_skipped
  * - string $current_tab
+ * - int    $media_overview_generated_at
+ * - bool   $media_overview_from_cache
+ * - int    $media_overview_cache_ttl
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -37,8 +40,16 @@ $wedding_gallery_media_tab_url    = add_query_arg(
 	),
 	admin_url( 'admin.php' )
 );
+$wedding_gallery_help_tab_url    = add_query_arg(
+	array(
+		'page' => 'wedding-gallery',
+		'tab'  => 'help',
+	),
+	admin_url( 'admin.php' )
+);
 $wedding_gallery_bulk_download_url = admin_url( 'admin-post.php?action=wg_bulk_download' );
 $wedding_gallery_bulk_delete_url   = admin_url( 'admin-post.php?action=wg_bulk_delete' );
+$wedding_gallery_refresh_media_url = admin_url( 'admin-post.php?action=wg_refresh_media_overview' );
 ?>
 
 <div class="wrap wg-admin-wrap">
@@ -50,6 +61,9 @@ $wedding_gallery_bulk_delete_url   = admin_url( 'admin-post.php?action=wg_bulk_d
 		</a>
 		<a href="<?php echo esc_url( $wedding_gallery_media_tab_url ); ?>" class="nav-tab <?php echo esc_attr( 'media' === $current_tab ? 'nav-tab-active' : '' ); ?>">
 			<?php esc_html_e( 'Media', 'wedding-gallery' ); ?>
+		</a>
+		<a href="<?php echo esc_url( $wedding_gallery_help_tab_url ); ?>" class="nav-tab <?php echo esc_attr( 'help' === $current_tab ? 'nav-tab-active' : '' ); ?>">
+			<?php esc_html_e( 'Help', 'wedding-gallery' ); ?>
 		</a>
 	</nav>
 
@@ -133,6 +147,10 @@ $wedding_gallery_bulk_delete_url   = admin_url( 'admin-post.php?action=wg_bulk_d
 	<?php elseif ( 'bulk_download_failed' === $notice ) : ?>
 		<div class="notice notice-error is-dismissible">
 			<p><?php esc_html_e( 'No files could be added to ZIP download.', 'wedding-gallery' ); ?></p>
+		</div>
+	<?php elseif ( 'media_refreshed' === $notice ) : ?>
+		<div class="notice notice-success is-dismissible">
+			<p><?php esc_html_e( 'Media diagnostics were refreshed.', 'wedding-gallery' ); ?></p>
 		</div>
 	<?php endif; ?>
 
@@ -256,16 +274,6 @@ $wedding_gallery_bulk_delete_url   = admin_url( 'admin-post.php?action=wg_bulk_d
 	<?php endif; ?>
 
 	<?php if ( 'settings' === $current_tab ) : ?>
-		<div class="notice notice-info">
-			<p><strong><?php esc_html_e( 'Pilot Handoff Notes', 'wedding-gallery' ); ?></strong></p>
-			<ul class="wg-ops-list">
-				<li><?php esc_html_e( 'Backup and restore database + uploads/wedding-gallery together to keep media decryptable.', 'wedding-gallery' ); ?></li>
-				<li><?php esc_html_e( 'Regenerating the guest token invalidates previous guest links and printed QR codes.', 'wedding-gallery' ); ?></li>
-				<li><?php esc_html_e( 'Cleanup On Uninstall runs only when the plugin is uninstalled, not when it is deactivated.', 'wedding-gallery' ); ?></li>
-				<li><?php esc_html_e( 'On shared hosting, runtime and memory limits can reduce effective max upload size.', 'wedding-gallery' ); ?></li>
-			</ul>
-		</div>
-
 		<div class="wg-settings-card">
 			<h2><?php esc_html_e( 'Settings', 'wedding-gallery' ); ?></h2>
 			<form action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post">
@@ -456,9 +464,26 @@ $wedding_gallery_bulk_delete_url   = admin_url( 'admin-post.php?action=wg_bulk_d
 				<p><?php esc_html_e( 'Set an Upload Page URL to generate the protected link.', 'wedding-gallery' ); ?></p>
 			<?php endif; ?>
 		</div>
-	<?php else : ?>
+	<?php elseif ( 'media' === $current_tab ) : ?>
 		<div class="wg-settings-card">
 			<h2><?php esc_html_e( 'Wedding Media', 'wedding-gallery' ); ?></h2>
+			<?php if ( $media_overview_generated_at > 0 ) : ?>
+				<p class="description">
+					<?php
+					printf(
+						/* translators: 1: last updated timestamp, 2: cache source label, 3: cache ttl in seconds */
+						esc_html__( 'Overview last updated: %1$s. Source: %2$s. Cache TTL: %3$d seconds.', 'wedding-gallery' ),
+						esc_html( wp_date( 'Y-m-d H:i:s', (int) $media_overview_generated_at ) ),
+						$media_overview_from_cache ? esc_html__( 'Cached', 'wedding-gallery' ) : esc_html__( 'Live', 'wedding-gallery' ),
+						(int) $media_overview_cache_ttl
+					);
+					?>
+				</p>
+			<?php endif; ?>
+			<form method="post" action="<?php echo esc_url( $wedding_gallery_refresh_media_url ); ?>" class="wg-inline-refresh-form">
+				<?php wp_nonce_field( 'wg_refresh_media_overview', 'wg_refresh_media_overview_nonce' ); ?>
+				<button type="submit" class="button"><?php esc_html_e( 'Refresh Diagnostics', 'wedding-gallery' ); ?></button>
+			</form>
 			<?php if ( empty( $uploads ) ) : ?>
 				<p><?php esc_html_e( 'No uploads yet.', 'wedding-gallery' ); ?></p>
 			<?php else : ?>
@@ -652,6 +677,43 @@ $wedding_gallery_bulk_delete_url   = admin_url( 'admin-post.php?action=wg_bulk_d
 					</table>
 				</form>
 			<?php endif; ?>
+		</div>
+	<?php else : ?>
+		<div class="wg-settings-card">
+			<h2><?php esc_html_e( 'How this plugin works', 'wedding-gallery' ); ?></h2>
+			<p><?php esc_html_e( 'Wedding Gallery provides a protected guest upload page for wedding photos and videos. Guests can only upload through the tokenized link or QR code. Uploaded files are stored encrypted in uploads/wedding-gallery and can be managed by admins in the Media tab.', 'wedding-gallery' ); ?></p>
+			<ol class="wg-ops-list">
+				<li><?php esc_html_e( 'Create a WordPress page with shortcode [wedding_gallery_upload].', 'wedding-gallery' ); ?></li>
+				<li><?php esc_html_e( 'Set that page URL in Settings and save.', 'wedding-gallery' ); ?></li>
+				<li><?php esc_html_e( 'Copy the protected guest link or print the QR code.', 'wedding-gallery' ); ?></li>
+				<li><?php esc_html_e( 'Guests upload photos/videos from phone camera, gallery/library, or files.', 'wedding-gallery' ); ?></li>
+				<li><?php esc_html_e( 'Use the Media tab to view health status, preview, download, or delete uploads.', 'wedding-gallery' ); ?></li>
+			</ol>
+		</div>
+
+		<div class="wg-settings-card">
+			<h2><?php esc_html_e( 'Theme and page design info', 'wedding-gallery' ); ?></h2>
+			<p><?php esc_html_e( 'The visual area above the upload card (for example hero images, logo, page header, and footer) is controlled by your active theme or page builder. The plugin itself renders the protected upload form card via shortcode inside that page.', 'wedding-gallery' ); ?></p>
+		</div>
+
+		<div class="wg-settings-card">
+			<h2><?php esc_html_e( 'Pilot handoff notes', 'wedding-gallery' ); ?></h2>
+			<ul class="wg-ops-list">
+				<li><?php esc_html_e( 'Backup and restore database + uploads/wedding-gallery together to keep media decryptable.', 'wedding-gallery' ); ?></li>
+				<li><?php esc_html_e( 'Regenerating the guest token invalidates previous guest links and printed QR codes.', 'wedding-gallery' ); ?></li>
+				<li><?php esc_html_e( 'Cleanup On Uninstall runs only when the plugin is uninstalled, not when it is deactivated.', 'wedding-gallery' ); ?></li>
+				<li><?php esc_html_e( 'On shared hosting, runtime and memory limits can reduce effective max upload size.', 'wedding-gallery' ); ?></li>
+			</ul>
+		</div>
+
+		<div class="wg-settings-card">
+			<h2><?php esc_html_e( 'Troubleshooting checklist', 'wedding-gallery' ); ?></h2>
+			<ul class="wg-ops-list">
+				<li><?php esc_html_e( 'If guests cannot open the upload page, check that the URL includes a valid wg_token.', 'wedding-gallery' ); ?></li>
+				<li><?php esc_html_e( 'If uploads fail, verify allowed file type and max file size limits.', 'wedding-gallery' ); ?></li>
+				<li><?php esc_html_e( 'If media cannot be downloaded, refresh diagnostics and check file health status in the Media tab.', 'wedding-gallery' ); ?></li>
+				<li><?php esc_html_e( 'If decryption errors occur after migration, verify database/options and uploads were restored together.', 'wedding-gallery' ); ?></li>
+			</ul>
 		</div>
 	<?php endif; ?>
 </div>

@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Wedding Gallery
  * Plugin URI:  https://github.com/tmsbyr87/wedding-gallery
- * Description: Collect wedding guest photos and videos through a protected frontend upload page.
+ * Description: Token-protected wedding guest photo/video uploads with encrypted-at-rest storage and admin media management.
  * Version:     1.0.0
  * Author:      Thomas Beyer
  * Author URI:  https://www.thomas-beyer.com

@@ -8,17 +8,17 @@ Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Collect wedding guest photos and videos via a token-protected upload page with encrypted-at-rest storage.
+Token-protected wedding guest photo/video uploads with encrypted-at-rest storage and admin media management.
 
 == Description ==
-Wedding Gallery provides a protected guest upload flow for wedding media:
+Wedding Gallery provides a protected wedding media workflow for guests and admins:
 
 * Token-protected guest upload link
 * QR-code support for phone-friendly access
 * Allowed file type validation for images and videos
 * Size limit enforcement with runtime-safe clamping
 * Encrypted storage in `wp-content/uploads/wedding-gallery/`
-* Admin-only file listing and download
+* Admin media tab with diagnostics, preview, download, and delete actions
 
 == Installation ==
 1. Upload the `wedding-gallery` folder to `/wp-content/plugins/`.

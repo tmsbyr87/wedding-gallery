@@ -14,6 +14,8 @@ class WG_Plugin {
 	const QR_CODE_DEFAULT_SIZE = 360;
 	const ENCRYPTED_FILE_EXT  = '.wgenc';
 	const METADATA_FILE_EXT   = '.wgmeta';
+	const MEDIA_OVERVIEW_CACHE_KEY = 'wg_media_overview_v1';
+	const MEDIA_OVERVIEW_CACHE_TTL = 120;
 
 	/**
 	 * @var WG_Plugin|null
@@ -60,6 +62,7 @@ class WG_Plugin {
 		add_action( 'admin_post_wg_delete_upload', array( $this, 'handle_delete_upload' ) );
 		add_action( 'admin_post_wg_bulk_download', array( $this, 'handle_bulk_download' ) );
 		add_action( 'admin_post_wg_bulk_delete', array( $this, 'handle_bulk_delete' ) );
+		add_action( 'admin_post_wg_refresh_media_overview', array( $this, 'handle_refresh_media_overview' ) );
 	}
 
 	/**
@@ -1026,6 +1029,7 @@ class WG_Plugin {
 					$message .= ' ' . __( 'Some files could not be uploaded.', 'wedding-gallery' );
 				}
 			}
+			$this->invalidate_media_overview_cache();
 			$this->redirect_with_message( $redirect_url, 'success', $message );
 		}
 
@@ -1185,7 +1189,7 @@ class WG_Plugin {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only admin UI state.
 		$requested_tab = isset( $_GET['tab'] ) ? sanitize_key( wp_unslash( $_GET['tab'] ) ) : 'settings';
 
-		return in_array( $requested_tab, array( 'settings', 'media' ), true ) ? $requested_tab : 'settings';
+		return in_array( $requested_tab, array( 'settings', 'media', 'help' ), true ) ? $requested_tab : 'settings';
 	}
 
 	/**
@@ -1195,7 +1199,7 @@ class WG_Plugin {
 	 */
 	private function get_admin_page_url( $tab, $args = array() ) {
 		$tab = sanitize_key( $tab );
-		if ( ! in_array( $tab, array( 'settings', 'media' ), true ) ) {
+		if ( ! in_array( $tab, array( 'settings', 'media', 'help' ), true ) ) {
 			$tab = 'settings';
 		}
 
@@ -1542,6 +1546,56 @@ class WG_Plugin {
 	}
 
 	/**
+	 * @return string
+	 */
+	private function get_media_overview_cache_key() {
+		return self::MEDIA_OVERVIEW_CACHE_KEY;
+	}
+
+	/**
+	 * @return void
+	 */
+	private function invalidate_media_overview_cache() {
+		delete_transient( $this->get_media_overview_cache_key() );
+	}
+
+	/**
+	 * @param bool $force_refresh
+	 * @return array<string, mixed>
+	 */
+	private function get_media_overview_data( $force_refresh = false ) {
+		$cache_key = $this->get_media_overview_cache_key();
+		if ( ! $force_refresh ) {
+			$cached = get_transient( $cache_key );
+			if (
+				is_array( $cached ) &&
+				isset( $cached['uploads'] ) &&
+				is_array( $cached['uploads'] ) &&
+				isset( $cached['upload_health_summary'] ) &&
+				is_array( $cached['upload_health_summary'] ) &&
+				isset( $cached['generated_at'] )
+			) {
+				$cached['from_cache'] = true;
+
+				return $cached;
+			}
+		}
+
+		$uploads              = $this->get_uploaded_files();
+		$upload_health_summary = $this->get_upload_health_summary( $uploads );
+		$payload              = array(
+			'uploads'               => $uploads,
+			'upload_health_summary' => $upload_health_summary,
+			'generated_at'          => time(),
+			'from_cache'            => false,
+		);
+
+		set_transient( $cache_key, $payload, self::MEDIA_OVERVIEW_CACHE_TTL );
+
+		return $payload;
+	}
+
+	/**
 	 * @param string $path
 	 * @param string $directory
 	 * @return bool
@@ -1855,18 +1909,28 @@ class WG_Plugin {
 
 		self::create_upload_dir();
 
+		$current_tab             = $this->get_admin_tab();
 		$settings                = $this->get_settings();
 		$protected_upload_url    = $this->get_protected_upload_url();
-		$uploads                 = $this->get_uploaded_files();
+		$uploads                 = array();
 		$allowed_text            = '.jpg, .jpeg, .png, .webp, .mp4, .mov';
 		$upload_limits           = $this->get_upload_limit_context( absint( $settings['max_upload_mb'] ) );
 		$max_upload_mb           = (int) $upload_limits['configured_mb'];
 		$effective_max_upload_mb = (int) $upload_limits['effective_mb'];
 		$key_status              = $this->get_encryption_key_status();
-		$upload_health_summary   = $this->get_upload_health_summary( $uploads );
-		$legacy_plaintext_count  = (int) $upload_health_summary['legacy_plaintext'];
+		$upload_health_summary   = $this->get_upload_health_summary( array() );
+		$media_overview_generated_at = 0;
+		$media_overview_from_cache   = false;
+		$media_overview_cache_ttl    = self::MEDIA_OVERVIEW_CACHE_TTL;
+		if ( 'media' === $current_tab ) {
+			$media_overview            = $this->get_media_overview_data( false );
+			$uploads                   = isset( $media_overview['uploads'] ) && is_array( $media_overview['uploads'] ) ? $media_overview['uploads'] : array();
+			$upload_health_summary     = isset( $media_overview['upload_health_summary'] ) && is_array( $media_overview['upload_health_summary'] ) ? $media_overview['upload_health_summary'] : $upload_health_summary;
+			$media_overview_generated_at = isset( $media_overview['generated_at'] ) ? absint( $media_overview['generated_at'] ) : 0;
+			$media_overview_from_cache = ! empty( $media_overview['from_cache'] );
+		}
+		$legacy_plaintext_count = 'media' === $current_tab ? (int) $upload_health_summary['legacy_plaintext'] : 0;
 		$qr_code_size            = self::QR_CODE_DEFAULT_SIZE;
-		$current_tab             = $this->get_admin_tab();
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only admin notice state.
 		$notice                  = isset( $_GET['wg_notice'] ) ? sanitize_key( wp_unslash( $_GET['wg_notice'] ) ) : '';
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only admin notice state.
@@ -1957,10 +2021,27 @@ class WG_Plugin {
 		}
 
 		if ( $this->delete_encrypted_blob_and_metadata( $file_name ) ) {
+			$this->invalidate_media_overview_cache();
 			$this->redirect_admin_notice( 'media', 'delete_success', array( 'wg_count' => 1 ) );
 		}
 
 		$this->redirect_admin_notice( 'media', 'delete_failed' );
+	}
+
+	/**
+	 * @return void
+	 */
+	public function handle_refresh_media_overview() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( esc_html__( 'You are not allowed to access this page.', 'wedding-gallery' ) );
+		}
+
+		check_admin_referer( 'wg_refresh_media_overview', 'wg_refresh_media_overview_nonce' );
+
+		$this->invalidate_media_overview_cache();
+		$this->get_media_overview_data( true );
+
+		$this->redirect_admin_notice( 'media', 'media_refreshed' );
 	}
 
 	/**
@@ -1991,6 +2072,7 @@ class WG_Plugin {
 		}
 
 		if ( $deleted > 0 && $skipped > 0 ) {
+			$this->invalidate_media_overview_cache();
 			$this->redirect_admin_notice(
 				'media',
 				'bulk_delete_partial',
@@ -2002,6 +2084,7 @@ class WG_Plugin {
 		}
 
 		if ( $deleted > 0 ) {
+			$this->invalidate_media_overview_cache();
 			$this->redirect_admin_notice( 'media', 'bulk_delete_success', array( 'wg_count' => $deleted ) );
 		}
 
