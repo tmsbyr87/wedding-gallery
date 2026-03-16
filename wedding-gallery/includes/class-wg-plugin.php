@@ -1778,22 +1778,23 @@ class WG_Plugin {
 	}
 
 	/**
+	 * @param string $scope_raw Raw scope value.
 	 * @return string
 	 */
-	private function get_bulk_scope_from_request() {
-		$scope = isset( $_POST['wg_scope'] ) ? sanitize_key( wp_unslash( $_POST['wg_scope'] ) ) : 'selected';
+	private function normalize_bulk_scope( $scope_raw ) {
+		$scope = sanitize_key( (string) $scope_raw );
 
 		return 'all' === $scope ? 'all' : 'selected';
 	}
 
 	/**
+	 * @param array<int, mixed> $selected_raw Raw selected file values.
 	 * @return array<int, string>
 	 */
-	private function get_selected_blob_files_from_request() {
-		$selected = isset( $_POST['wg_files'] ) && is_array( $_POST['wg_files'] ) ? wp_unslash( $_POST['wg_files'] ) : array();
-		$files    = array();
+	private function normalize_selected_blob_files( $selected_raw ) {
+		$files = array();
 
-		foreach ( $selected as $item ) {
+		foreach ( $selected_raw as $item ) {
 			$clean = sanitize_file_name( (string) $item );
 			if ( '' !== $clean && $this->is_encrypted_blob_file( $clean ) ) {
 				$files[] = $clean;
@@ -1832,14 +1833,16 @@ class WG_Plugin {
 	}
 
 	/**
+	 * @param string             $scope          Sanitized scope value.
+	 * @param array<int, string> $selected_files Sanitized selected file list.
 	 * @return array<int, string>
 	 */
-	private function get_bulk_target_files() {
-		if ( 'all' === $this->get_bulk_scope_from_request() ) {
+	private function get_bulk_target_files( $scope, $selected_files ) {
+		if ( 'all' === $scope ) {
 			return $this->get_all_encrypted_blob_files();
 		}
 
-		return $this->get_selected_blob_files_from_request();
+		return $selected_files;
 	}
 
 	/**
@@ -2054,8 +2057,15 @@ class WG_Plugin {
 
 		check_admin_referer( 'wg_bulk_delete', 'wg_bulk_delete_nonce' );
 
-		$scope = $this->get_bulk_scope_from_request();
-		$files = $this->get_bulk_target_files();
+		$scope_raw = isset( $_POST['wg_scope'] ) ? wp_unslash( $_POST['wg_scope'] ) : 'selected';
+		$scope     = $this->normalize_bulk_scope( (string) $scope_raw );
+
+		$selected_raw = array();
+		if ( isset( $_POST['wg_files'] ) && is_array( $_POST['wg_files'] ) ) {
+			$selected_raw = wp_unslash( $_POST['wg_files'] );
+		}
+		$selected_files = $this->normalize_selected_blob_files( $selected_raw );
+		$files          = $this->get_bulk_target_files( $scope, $selected_files );
 		if ( empty( $files ) ) {
 			$empty_notice = 'all' === $scope ? 'bulk_no_files' : 'bulk_no_selection';
 			$this->redirect_admin_notice( 'media', $empty_notice );
@@ -2101,8 +2111,15 @@ class WG_Plugin {
 
 		check_admin_referer( 'wg_bulk_download', 'wg_bulk_download_nonce' );
 
-		$scope = $this->get_bulk_scope_from_request();
-		$files = $this->get_bulk_target_files();
+		$scope_raw = isset( $_POST['wg_scope'] ) ? wp_unslash( $_POST['wg_scope'] ) : 'selected';
+		$scope     = $this->normalize_bulk_scope( (string) $scope_raw );
+
+		$selected_raw = array();
+		if ( isset( $_POST['wg_files'] ) && is_array( $_POST['wg_files'] ) ) {
+			$selected_raw = wp_unslash( $_POST['wg_files'] );
+		}
+		$selected_files = $this->normalize_selected_blob_files( $selected_raw );
+		$files          = $this->get_bulk_target_files( $scope, $selected_files );
 		if ( empty( $files ) ) {
 			$empty_notice = 'all' === $scope ? 'bulk_no_files' : 'bulk_no_selection';
 			$this->redirect_admin_notice( 'media', $empty_notice );
@@ -2167,10 +2184,31 @@ class WG_Plugin {
 		header( 'X-Content-Type-Options: nosniff' );
 		header( 'Content-Type: application/zip' );
 		header( 'Content-Disposition: attachment; filename="' . basename( $archive_name ) . '"' );
-		header( 'Content-Length: ' . absint( filesize( $temp_zip ) ) );
+		if ( ! function_exists( 'WP_Filesystem' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+		}
 
-		readfile( $temp_zip ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_readfile
+		global $wp_filesystem;
+		WP_Filesystem();
+
+		if ( ! $wp_filesystem || ! $wp_filesystem->exists( $temp_zip ) ) {
+			wp_delete_file( $temp_zip );
+			$this->redirect_admin_notice( 'media', 'zip_failed' );
+		}
+
+		$zip_size = $wp_filesystem->size( $temp_zip );
+		$zip_data = $wp_filesystem->get_contents( $temp_zip );
 		wp_delete_file( $temp_zip );
+
+		if ( false === $zip_data ) {
+			$this->redirect_admin_notice( 'media', 'zip_failed' );
+		}
+
+		if ( false !== $zip_size ) {
+			header( 'Content-Length: ' . absint( $zip_size ) );
+		}
+
+		echo $zip_data; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- binary ZIP response.
 		exit;
 	}
 }
