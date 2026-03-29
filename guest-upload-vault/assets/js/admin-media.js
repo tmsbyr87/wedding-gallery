@@ -2,18 +2,18 @@
 	'use strict';
 
 	function getI18nValue(key, fallback) {
-		if (window.guvAdminMediaI18n && window.guvAdminMediaI18n[key]) {
-			return window.guvAdminMediaI18n[key];
+		if (window.guestUploadVaultAdminMediaI18n && window.guestUploadVaultAdminMediaI18n[key]) {
+			return window.guestUploadVaultAdminMediaI18n[key];
 		}
 		return fallback;
 	}
 
 	function onReady() {
-		var bulkForm = document.getElementById('guv_media_bulk_form');
-		var selectAll = document.getElementById('guv_select_all_media');
+		var bulkForm = document.getElementById('guest_upload_vault_media_bulk_form');
+		var selectAll = document.getElementById('guest_upload_vault_select_all_media');
 
 		if (bulkForm && selectAll) {
-			var rowChecks = bulkForm.querySelectorAll('.guv-media-select');
+			var rowChecks = bulkForm.querySelectorAll('.guest-upload-vault-media-select');
 			selectAll.addEventListener('change', function () {
 				var checked = !!selectAll.checked;
 				rowChecks.forEach(function (checkbox) {
@@ -39,8 +39,8 @@
 					return;
 				}
 
-				if (submitter.dataset.guvRequiresSelection === '1') {
-					var hasSelection = !!bulkForm.querySelector('.guv-media-select:checked');
+				if (submitter.dataset.guestUploadVaultRequiresSelection === '1') {
+					var hasSelection = !!bulkForm.querySelector('.guest-upload-vault-media-select:checked');
 					if (!hasSelection) {
 						event.preventDefault();
 						window.alert(getI18nValue('noSelection', 'Please select at least one file first.'));
@@ -50,12 +50,12 @@
 			});
 		}
 
-		var deleteButtons = document.querySelectorAll('.guv-delete-button');
+		var deleteButtons = document.querySelectorAll('.guest-upload-vault-delete-button');
 		deleteButtons.forEach(function (button) {
 			button.addEventListener('click', function (event) {
-				var scope = button.dataset.guvDeleteScope || 'single';
+				var scope = button.dataset.guestUploadVaultDeleteScope || 'single';
 				if (scope === 'selected' && bulkForm) {
-					var hasSelection = !!bulkForm.querySelector('.guv-media-select:checked');
+					var hasSelection = !!bulkForm.querySelector('.guest-upload-vault-media-select:checked');
 					if (!hasSelection) {
 						event.preventDefault();
 						window.alert(getI18nValue('noSelection', 'Please select at least one file first.'));

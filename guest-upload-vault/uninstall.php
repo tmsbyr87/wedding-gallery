@@ -7,7 +7,10 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
 }
 
-$guest_upload_vault_settings = get_option( 'guv_settings', array() );
+$guest_upload_vault_settings = get_option( 'guest_upload_vault_settings', null );
+if ( null === $guest_upload_vault_settings ) {
+	$guest_upload_vault_settings = get_option( 'guv_settings', array() );
+}
 $guest_upload_vault_cleanup  = is_array( $guest_upload_vault_settings ) && ! empty( $guest_upload_vault_settings['cleanup_on_uninstall'] );
 
 if ( $guest_upload_vault_cleanup ) {
@@ -29,4 +32,5 @@ if ( $guest_upload_vault_cleanup ) {
 	}
 }
 
+delete_option( 'guest_upload_vault_settings' );
 delete_option( 'guv_settings' );

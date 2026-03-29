@@ -29,42 +29,42 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $guest_upload_vault_settings_tab_url = add_query_arg(
 	array(
-		'page' => GUV_Plugin::ADMIN_PAGE_SLUG,
+		'page' => Guest_Upload_Vault_Plugin::ADMIN_PAGE_SLUG,
 		'tab'  => 'settings',
 	),
 	admin_url( 'admin.php' )
 );
 $guest_upload_vault_media_tab_url    = add_query_arg(
 	array(
-		'page' => GUV_Plugin::ADMIN_PAGE_MEDIA_SLUG,
+		'page' => Guest_Upload_Vault_Plugin::ADMIN_PAGE_MEDIA_SLUG,
 		'tab'  => 'media',
 	),
 	admin_url( 'admin.php' )
 );
 $guest_upload_vault_help_tab_url    = add_query_arg(
 	array(
-		'page' => GUV_Plugin::ADMIN_PAGE_HELP_SLUG,
+		'page' => Guest_Upload_Vault_Plugin::ADMIN_PAGE_HELP_SLUG,
 		'tab'  => 'help',
 	),
 	admin_url( 'admin.php' )
 );
-$guest_upload_vault_bulk_download_url = admin_url( 'admin-post.php?action=guv_bulk_download' );
-$guest_upload_vault_bulk_delete_url   = admin_url( 'admin-post.php?action=guv_bulk_delete' );
-$guest_upload_vault_refresh_media_url = admin_url( 'admin-post.php?action=guv_refresh_media_overview' );
+$guest_upload_vault_bulk_download_url = admin_url( 'admin-post.php?action=guest_upload_vault_bulk_download' );
+$guest_upload_vault_bulk_delete_url   = admin_url( 'admin-post.php?action=guest_upload_vault_bulk_delete' );
+$guest_upload_vault_refresh_media_url = admin_url( 'admin-post.php?action=guest_upload_vault_refresh_media_overview' );
 ?>
 
-<div class="wrap guv-admin-wrap">
+<div class="wrap guest-upload-vault-admin-wrap">
 	<h1><?php esc_html_e( 'Guest Upload Vault', 'guest-upload-vault' ); ?></h1>
-	<div class="guv-brand">
+	<div class="guest-upload-vault-brand">
 		<img
-			src="<?php echo esc_url( GUV_PLUGIN_URL . 'assets/images/logo.png' ); ?>"
+			src="<?php echo esc_url( GUEST_UPLOAD_VAULT_PLUGIN_URL . 'assets/images/logo.png' ); ?>"
 			alt="<?php esc_attr_e( 'Guest Upload Vault logo', 'guest-upload-vault' ); ?>"
-			class="guv-brand-logo"
+			class="guest-upload-vault-brand-logo"
 		/>
 		<p class="description"><?php esc_html_e( 'Securely collect guest photos and videos via protected link or QR code.', 'guest-upload-vault' ); ?></p>
 	</div>
 
-	<nav class="nav-tab-wrapper guv-tab-nav" aria-label="<?php esc_attr_e( 'Guest Upload Vault tabs', 'guest-upload-vault' ); ?>">
+	<nav class="nav-tab-wrapper guest-upload-vault-tab-nav" aria-label="<?php esc_attr_e( 'Guest Upload Vault tabs', 'guest-upload-vault' ); ?>">
 		<a href="<?php echo esc_url( $guest_upload_vault_settings_tab_url ); ?>" class="nav-tab <?php echo esc_attr( 'settings' === $current_tab ? 'nav-tab-active' : '' ); ?>">
 			<?php esc_html_e( 'Settings', 'guest-upload-vault' ); ?>
 		</a>
@@ -283,11 +283,11 @@ $guest_upload_vault_refresh_media_url = admin_url( 'admin-post.php?action=guv_re
 	<?php endif; ?>
 
 	<?php if ( 'settings' === $current_tab ) : ?>
-		<div class="guv-settings-card">
+		<div class="guest-upload-vault-settings-card">
 			<h2><?php esc_html_e( 'Settings', 'guest-upload-vault' ); ?></h2>
 			<form action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post">
-				<input type="hidden" name="action" value="guv_save_settings" />
-				<?php wp_nonce_field( 'guv_save_settings', 'guv_save_settings_nonce' ); ?>
+				<input type="hidden" name="action" value="guest_upload_vault_save_settings" />
+				<?php wp_nonce_field( 'guest_upload_vault_save_settings', 'guest_upload_vault_save_settings_nonce' ); ?>
 
 				<table class="form-table" role="presentation">
 					<tbody>
@@ -426,31 +426,31 @@ $guest_upload_vault_refresh_media_url = admin_url( 'admin-post.php?action=guv_re
 			</form>
 		</div>
 
-		<div class="guv-settings-card">
+		<div class="guest-upload-vault-settings-card">
 			<h2><?php esc_html_e( 'Protected Upload URL (QR Target)', 'guest-upload-vault' ); ?></h2>
 			<?php if ( ! empty( $protected_upload_url ) ) : ?>
 				<p><code><?php echo esc_html( $protected_upload_url ); ?></code></p>
 				<p>
-					<label for="guv_protected_upload_url"><strong><?php esc_html_e( 'Guest Upload Link', 'guest-upload-vault' ); ?></strong></label><br />
+					<label for="guest_upload_vault_protected_upload_url"><strong><?php esc_html_e( 'Guest Upload Link', 'guest-upload-vault' ); ?></strong></label><br />
 					<input
-						id="guv_protected_upload_url"
+						id="guest_upload_vault_protected_upload_url"
 						type="text"
 						class="regular-text code"
 						readonly
 						value="<?php echo esc_attr( $protected_upload_url ); ?>"
 						style="max-width: 100%; width: 520px;"
 					/>
-					<button type="button" class="button" id="guv_copy_link">
+					<button type="button" class="button" id="guest_upload_vault_copy_link">
 						<?php esc_html_e( 'Copy Link', 'guest-upload-vault' ); ?>
 					</button>
 				</p>
 				<p><strong><?php esc_html_e( 'QR Code', 'guest-upload-vault' ); ?></strong></p>
-				<div id="guv_qr_code" class="guv-qr-box" aria-label="<?php esc_attr_e( 'Guest upload QR code', 'guest-upload-vault' ); ?>"></div>
+				<div id="guest_upload_vault_qr_code" class="guest-upload-vault-qr-box" aria-label="<?php esc_attr_e( 'Guest upload QR code', 'guest-upload-vault' ); ?>"></div>
 				<p>
-					<a class="button" id="guv_view_qr" href="#" target="_blank" rel="noopener" style="pointer-events: none; opacity: 0.7;">
+					<a class="button" id="guest_upload_vault_view_qr" href="#" target="_blank" rel="noopener" style="pointer-events: none; opacity: 0.7;">
 						<?php esc_html_e( 'View QR Code', 'guest-upload-vault' ); ?>
 					</a>
-					<a class="button button-secondary" id="guv_download_qr" href="#" download="guest-upload-vault-qr.png" style="pointer-events: none; opacity: 0.7;">
+					<a class="button button-secondary" id="guest_upload_vault_download_qr" href="#" download="guest-upload-vault-qr.png" style="pointer-events: none; opacity: 0.7;">
 						<?php esc_html_e( 'Download QR PNG', 'guest-upload-vault' ); ?>
 					</a>
 				</p>
@@ -460,7 +460,7 @@ $guest_upload_vault_refresh_media_url = admin_url( 'admin-post.php?action=guv_re
 				<p class="description">
 					<?php esc_html_e( 'Print tip: open the QR image and print at high quality for guest signage.', 'guest-upload-vault' ); ?>
 				</p>
-				<div class="guv-help-box">
+				<div class="guest-upload-vault-help-box">
 					<p><strong><?php esc_html_e( 'How to use the QR code', 'guest-upload-vault' ); ?></strong></p>
 					<ol>
 						<li><?php esc_html_e( 'Set the Upload Page URL and click Save Settings to generate the current guest link.', 'guest-upload-vault' ); ?></li>
@@ -474,7 +474,7 @@ $guest_upload_vault_refresh_media_url = admin_url( 'admin-post.php?action=guv_re
 			<?php endif; ?>
 		</div>
 	<?php elseif ( 'media' === $current_tab ) : ?>
-		<div class="guv-settings-card">
+		<div class="guest-upload-vault-settings-card">
 			<h2><?php esc_html_e( 'Collected Media', 'guest-upload-vault' ); ?></h2>
 			<?php
 			$guest_upload_vault_photo_count = isset( $media_dashboard['photo_count'] ) ? absint( $media_dashboard['photo_count'] ) : 0;
@@ -482,33 +482,33 @@ $guest_upload_vault_refresh_media_url = admin_url( 'admin-post.php?action=guv_re
 			$guest_upload_vault_total_count = isset( $media_dashboard['file_count_total'] ) ? absint( $media_dashboard['file_count_total'] ) : 0;
 			$guest_upload_vault_total_bytes = isset( $media_dashboard['bytes_total'] ) ? absint( $media_dashboard['bytes_total'] ) : 0;
 			?>
-			<div class="guv-media-kpi-grid">
-				<div class="guv-media-kpi-card">
-					<span class="dashicons dashicons-format-image guv-media-kpi-icon" aria-hidden="true"></span>
-					<div class="guv-media-kpi-body">
-						<span class="guv-media-kpi-value"><?php echo esc_html( number_format_i18n( $guest_upload_vault_photo_count ) ); ?></span>
-						<span class="guv-media-kpi-label"><?php esc_html_e( 'Photo', 'guest-upload-vault' ); ?></span>
+			<div class="guest-upload-vault-media-kpi-grid">
+				<div class="guest-upload-vault-media-kpi-card">
+					<span class="dashicons dashicons-format-image guest-upload-vault-media-kpi-icon" aria-hidden="true"></span>
+					<div class="guest-upload-vault-media-kpi-body">
+						<span class="guest-upload-vault-media-kpi-value"><?php echo esc_html( number_format_i18n( $guest_upload_vault_photo_count ) ); ?></span>
+						<span class="guest-upload-vault-media-kpi-label"><?php esc_html_e( 'Photo', 'guest-upload-vault' ); ?></span>
 					</div>
 				</div>
-				<div class="guv-media-kpi-card">
-					<span class="dashicons dashicons-video-alt3 guv-media-kpi-icon" aria-hidden="true"></span>
-					<div class="guv-media-kpi-body">
-						<span class="guv-media-kpi-value"><?php echo esc_html( number_format_i18n( $guest_upload_vault_video_count ) ); ?></span>
-						<span class="guv-media-kpi-label"><?php esc_html_e( 'Video', 'guest-upload-vault' ); ?></span>
+				<div class="guest-upload-vault-media-kpi-card">
+					<span class="dashicons dashicons-video-alt3 guest-upload-vault-media-kpi-icon" aria-hidden="true"></span>
+					<div class="guest-upload-vault-media-kpi-body">
+						<span class="guest-upload-vault-media-kpi-value"><?php echo esc_html( number_format_i18n( $guest_upload_vault_video_count ) ); ?></span>
+						<span class="guest-upload-vault-media-kpi-label"><?php esc_html_e( 'Video', 'guest-upload-vault' ); ?></span>
 					</div>
 				</div>
-				<div class="guv-media-kpi-card">
-					<span class="dashicons dashicons-format-gallery guv-media-kpi-icon" aria-hidden="true"></span>
-					<div class="guv-media-kpi-body">
-						<span class="guv-media-kpi-value"><?php echo esc_html( number_format_i18n( $guest_upload_vault_total_count ) ); ?></span>
-						<span class="guv-media-kpi-label"><?php esc_html_e( 'Collected Media', 'guest-upload-vault' ); ?></span>
+				<div class="guest-upload-vault-media-kpi-card">
+					<span class="dashicons dashicons-format-gallery guest-upload-vault-media-kpi-icon" aria-hidden="true"></span>
+					<div class="guest-upload-vault-media-kpi-body">
+						<span class="guest-upload-vault-media-kpi-value"><?php echo esc_html( number_format_i18n( $guest_upload_vault_total_count ) ); ?></span>
+						<span class="guest-upload-vault-media-kpi-label"><?php esc_html_e( 'Collected Media', 'guest-upload-vault' ); ?></span>
 					</div>
 				</div>
-				<div class="guv-media-kpi-card">
-					<span class="dashicons dashicons-database-view guv-media-kpi-icon" aria-hidden="true"></span>
-					<div class="guv-media-kpi-body">
-						<span class="guv-media-kpi-value"><?php echo esc_html( size_format( $guest_upload_vault_total_bytes ) ); ?></span>
-						<span class="guv-media-kpi-label"><?php esc_html_e( 'Size', 'guest-upload-vault' ); ?></span>
+				<div class="guest-upload-vault-media-kpi-card">
+					<span class="dashicons dashicons-database-view guest-upload-vault-media-kpi-icon" aria-hidden="true"></span>
+					<div class="guest-upload-vault-media-kpi-body">
+						<span class="guest-upload-vault-media-kpi-value"><?php echo esc_html( size_format( $guest_upload_vault_total_bytes ) ); ?></span>
+						<span class="guest-upload-vault-media-kpi-label"><?php esc_html_e( 'Size', 'guest-upload-vault' ); ?></span>
 					</div>
 				</div>
 			</div>
@@ -525,38 +525,38 @@ $guest_upload_vault_refresh_media_url = admin_url( 'admin-post.php?action=guv_re
 					?>
 				</p>
 			<?php endif; ?>
-			<form method="post" action="<?php echo esc_url( $guest_upload_vault_refresh_media_url ); ?>" class="guv-inline-refresh-form">
-				<?php wp_nonce_field( 'guv_refresh_media_overview', 'guv_refresh_media_overview_nonce' ); ?>
+			<form method="post" action="<?php echo esc_url( $guest_upload_vault_refresh_media_url ); ?>" class="guest-upload-vault-inline-refresh-form">
+				<?php wp_nonce_field( 'guest_upload_vault_refresh_media_overview', 'guest_upload_vault_refresh_media_overview_nonce' ); ?>
 				<button type="submit" class="button"><?php esc_html_e( 'Refresh Diagnostics', 'guest-upload-vault' ); ?></button>
 			</form>
 			<?php if ( empty( $uploads ) ) : ?>
 				<p><?php esc_html_e( 'No uploads yet.', 'guest-upload-vault' ); ?></p>
 			<?php else : ?>
-				<form method="post" action="<?php echo esc_url( $guest_upload_vault_bulk_download_url ); ?>" id="guv_media_bulk_form">
-					<?php wp_nonce_field( 'guv_bulk_download', 'guv_bulk_download_nonce' ); ?>
-					<?php wp_nonce_field( 'guv_bulk_delete', 'guv_bulk_delete_nonce' ); ?>
+				<form method="post" action="<?php echo esc_url( $guest_upload_vault_bulk_download_url ); ?>" id="guest_upload_vault_media_bulk_form">
+					<?php wp_nonce_field( 'guest_upload_vault_bulk_download', 'guest_upload_vault_bulk_download_nonce' ); ?>
+					<?php wp_nonce_field( 'guest_upload_vault_bulk_delete', 'guest_upload_vault_bulk_delete_nonce' ); ?>
 
-					<div class="guv-media-toolbar">
-						<button type="submit" class="button button-primary" name="guv_scope" value="selected" data-guv-requires-selection="1">
+					<div class="guest-upload-vault-media-toolbar">
+						<button type="submit" class="button button-primary" name="guest_upload_vault_scope" value="selected" data-guest-upload-vault-requires-selection="1">
 							<?php esc_html_e( 'Download Selected (ZIP)', 'guest-upload-vault' ); ?>
 						</button>
-						<button type="submit" class="button" name="guv_scope" value="all">
+						<button type="submit" class="button" name="guest_upload_vault_scope" value="all">
 							<?php esc_html_e( 'Download All (ZIP)', 'guest-upload-vault' ); ?>
 						</button>
-						<button type="submit" class="button button-secondary guv-delete-button" name="guv_scope" value="selected" formaction="<?php echo esc_url( $guest_upload_vault_bulk_delete_url ); ?>" data-guv-requires-selection="1" data-guv-delete-scope="selected">
+						<button type="submit" class="button button-secondary guest-upload-vault-delete-button" name="guest_upload_vault_scope" value="selected" formaction="<?php echo esc_url( $guest_upload_vault_bulk_delete_url ); ?>" data-guest-upload-vault-requires-selection="1" data-guest-upload-vault-delete-scope="selected">
 							<?php esc_html_e( 'Delete Selected', 'guest-upload-vault' ); ?>
 						</button>
-						<button type="submit" class="button guv-delete-button" name="guv_scope" value="all" formaction="<?php echo esc_url( $guest_upload_vault_bulk_delete_url ); ?>" data-guv-delete-scope="all">
+						<button type="submit" class="button guest-upload-vault-delete-button" name="guest_upload_vault_scope" value="all" formaction="<?php echo esc_url( $guest_upload_vault_bulk_delete_url ); ?>" data-guest-upload-vault-delete-scope="all">
 							<?php esc_html_e( 'Delete All', 'guest-upload-vault' ); ?>
 						</button>
 					</div>
 
-					<table class="widefat striped guv-media-table">
+					<table class="widefat striped guest-upload-vault-media-table">
 						<thead>
 							<tr>
 								<th class="check-column">
-									<label class="screen-reader-text" for="guv_select_all_media"><?php esc_html_e( 'Select all files', 'guest-upload-vault' ); ?></label>
-									<input type="checkbox" id="guv_select_all_media" />
+									<label class="screen-reader-text" for="guest_upload_vault_select_all_media"><?php esc_html_e( 'Select all files', 'guest-upload-vault' ); ?></label>
+									<input type="checkbox" id="guest_upload_vault_select_all_media" />
 								</th>
 								<th><?php esc_html_e( 'Preview', 'guest-upload-vault' ); ?></th>
 								<th><?php esc_html_e( 'Filename', 'guest-upload-vault' ); ?></th>
@@ -571,12 +571,12 @@ $guest_upload_vault_refresh_media_url = admin_url( 'admin-post.php?action=guv_re
 							<?php foreach ( $uploads as $guest_upload_vault_file ) : ?>
 								<?php
 								$guest_upload_vault_stored_file   = isset( $guest_upload_vault_file['stored_file'] ) ? sanitize_file_name( (string) $guest_upload_vault_file['stored_file'] ) : '';
-								$guest_upload_vault_is_encrypted  = GUV_Plugin::ENCRYPTED_FILE_EXT === substr( $guest_upload_vault_stored_file, -strlen( GUV_Plugin::ENCRYPTED_FILE_EXT ) );
+								$guest_upload_vault_is_encrypted  = Guest_Upload_Vault_Plugin::ENCRYPTED_FILE_EXT === substr( $guest_upload_vault_stored_file, -strlen( Guest_Upload_Vault_Plugin::ENCRYPTED_FILE_EXT ) );
 								$guest_upload_vault_is_selectable = $guest_upload_vault_is_encrypted;
 								$guest_upload_vault_media_kind    = isset( $guest_upload_vault_file['media_kind'] ) ? sanitize_key( (string) $guest_upload_vault_file['media_kind'] ) : 'file';
 								$guest_upload_vault_health_status = isset( $guest_upload_vault_file['health_status'] ) ? (string) $guest_upload_vault_file['health_status'] : '';
 								$guest_upload_vault_health_label  = __( 'Unknown', 'guest-upload-vault' );
-								$guest_upload_vault_health_class  = 'guv-health-warning';
+								$guest_upload_vault_health_class  = 'guest-upload-vault-health-warning';
 								$guest_upload_vault_can_download  = ! empty( $guest_upload_vault_file['can_download'] );
 								$guest_upload_vault_download_url  = '';
 								$guest_upload_vault_view_url      = '';
@@ -585,57 +585,57 @@ $guest_upload_vault_refresh_media_url = admin_url( 'admin-post.php?action=guv_re
 									$guest_upload_vault_download_url = wp_nonce_url(
 										add_query_arg(
 											array(
-												'action' => 'guv_download_upload',
+												'action' => 'guest_upload_vault_download_upload',
 												'file'   => $guest_upload_vault_stored_file,
 											),
 											admin_url( 'admin-post.php' )
 										),
-										'guv_download_file_' . $guest_upload_vault_stored_file
+										'guest_upload_vault_download_file_' . $guest_upload_vault_stored_file
 									);
 									$guest_upload_vault_view_url = wp_nonce_url(
 										add_query_arg(
 											array(
-												'action' => 'guv_view_upload',
+												'action' => 'guest_upload_vault_view_upload',
 												'file'   => $guest_upload_vault_stored_file,
 											),
 											admin_url( 'admin-post.php' )
 										),
-										'guv_view_file_' . $guest_upload_vault_stored_file
+										'guest_upload_vault_view_file_' . $guest_upload_vault_stored_file
 									);
 								}
 
 								switch ( $guest_upload_vault_health_status ) {
 									case 'ok':
 										$guest_upload_vault_health_label = __( 'Healthy', 'guest-upload-vault' );
-										$guest_upload_vault_health_class = 'guv-health-ok';
+										$guest_upload_vault_health_class = 'guest-upload-vault-health-ok';
 										break;
 									case 'missing_metadata':
 										$guest_upload_vault_health_label = __( 'Missing Metadata', 'guest-upload-vault' );
-										$guest_upload_vault_health_class = 'guv-health-error';
+										$guest_upload_vault_health_class = 'guest-upload-vault-health-error';
 										break;
 									case 'invalid_metadata':
 										$guest_upload_vault_health_label = __( 'Metadata Damaged', 'guest-upload-vault' );
-										$guest_upload_vault_health_class = 'guv-health-error';
+										$guest_upload_vault_health_class = 'guest-upload-vault-health-error';
 										break;
 									case 'metadata_tampered':
 										$guest_upload_vault_health_label = __( 'Integrity Failed', 'guest-upload-vault' );
-										$guest_upload_vault_health_class = 'guv-health-error';
+										$guest_upload_vault_health_class = 'guest-upload-vault-health-error';
 										break;
 									case 'unsupported_key_version':
 										$guest_upload_vault_health_label = __( 'Key Version Mismatch', 'guest-upload-vault' );
-										$guest_upload_vault_health_class = 'guv-health-error';
+										$guest_upload_vault_health_class = 'guest-upload-vault-health-error';
 										break;
 									case 'decrypt_failed':
 										$guest_upload_vault_health_label = __( 'Decrypt Failed', 'guest-upload-vault' );
-										$guest_upload_vault_health_class = 'guv-health-error';
+										$guest_upload_vault_health_class = 'guest-upload-vault-health-error';
 										break;
 									case 'legacy_metadata_plaintext':
 										$guest_upload_vault_health_label = __( 'Legacy Metadata', 'guest-upload-vault' );
-										$guest_upload_vault_health_class = 'guv-health-warning';
+										$guest_upload_vault_health_class = 'guest-upload-vault-health-warning';
 										break;
 									case 'legacy_plaintext':
 										$guest_upload_vault_health_label = __( 'Legacy Plaintext', 'guest-upload-vault' );
-										$guest_upload_vault_health_class = 'guv-health-warning';
+										$guest_upload_vault_health_class = 'guest-upload-vault-health-warning';
 										break;
 								}
 
@@ -649,15 +649,15 @@ $guest_upload_vault_refresh_media_url = admin_url( 'admin-post.php?action=guv_re
 								<tr>
 									<th class="check-column">
 										<?php if ( $guest_upload_vault_is_selectable ) : ?>
-											<label class="screen-reader-text" for="<?php echo esc_attr( 'guv_media_' . md5( $guest_upload_vault_stored_file ) ); ?>">
+											<label class="screen-reader-text" for="<?php echo esc_attr( 'guest_upload_vault_media_' . md5( $guest_upload_vault_stored_file ) ); ?>">
 												<?php esc_html_e( 'Select media file', 'guest-upload-vault' ); ?>
 											</label>
 											<input
-												id="<?php echo esc_attr( 'guv_media_' . md5( $guest_upload_vault_stored_file ) ); ?>"
+												id="<?php echo esc_attr( 'guest_upload_vault_media_' . md5( $guest_upload_vault_stored_file ) ); ?>"
 												type="checkbox"
-												name="guv_files[]"
+												name="guest_upload_vault_files[]"
 												value="<?php echo esc_attr( $guest_upload_vault_stored_file ); ?>"
-												class="guv-media-select"
+												class="guest-upload-vault-media-select"
 											/>
 										<?php else : ?>
 											<span aria-hidden="true">-</span>
@@ -665,11 +665,11 @@ $guest_upload_vault_refresh_media_url = admin_url( 'admin-post.php?action=guv_re
 									</th>
 									<td>
 										<?php if ( 'photo' === $guest_upload_vault_media_kind && $guest_upload_vault_can_download && '' !== $guest_upload_vault_view_url ) : ?>
-											<img src="<?php echo esc_url( $guest_upload_vault_view_url ); ?>" alt="" loading="lazy" class="guv-media-thumb" />
+											<img src="<?php echo esc_url( $guest_upload_vault_view_url ); ?>" alt="" loading="lazy" class="guest-upload-vault-media-thumb" />
 										<?php elseif ( 'video' === $guest_upload_vault_media_kind ) : ?>
-											<span class="dashicons dashicons-video-alt3 guv-media-icon" aria-hidden="true"></span>
+											<span class="dashicons dashicons-video-alt3 guest-upload-vault-media-icon" aria-hidden="true"></span>
 										<?php else : ?>
-											<span class="dashicons dashicons-media-default guv-media-icon" aria-hidden="true"></span>
+											<span class="dashicons dashicons-media-default guest-upload-vault-media-icon" aria-hidden="true"></span>
 										<?php endif; ?>
 									</td>
 									<td><?php echo esc_html( (string) $guest_upload_vault_file['name'] ); ?></td>
@@ -682,13 +682,13 @@ $guest_upload_vault_refresh_media_url = admin_url( 'admin-post.php?action=guv_re
 									<td><?php echo esc_html( size_format( (int) $guest_upload_vault_file['size'] ) ); ?></td>
 									<td><?php echo esc_html( wp_date( 'Y-m-d H:i', (int) $guest_upload_vault_file['modified'] ) ); ?></td>
 									<td>
-										<span class="guv-health-badge <?php echo esc_attr( $guest_upload_vault_health_class ); ?>"><?php echo esc_html( $guest_upload_vault_health_label ); ?></span><br />
+										<span class="guest-upload-vault-health-badge <?php echo esc_attr( $guest_upload_vault_health_class ); ?>"><?php echo esc_html( $guest_upload_vault_health_label ); ?></span><br />
 										<small><?php echo esc_html( isset( $guest_upload_vault_file['health_message'] ) ? (string) $guest_upload_vault_file['health_message'] : '' ); ?></small>
 									</td>
-									<td class="guv-row-actions">
+									<td class="guest-upload-vault-row-actions">
 										<?php if ( $guest_upload_vault_can_download && '' !== $guest_upload_vault_view_url ) : ?>
 											<a
-												class="button button-small guv-icon-action"
+												class="button button-small guest-upload-vault-icon-action"
 												href="<?php echo esc_url( $guest_upload_vault_view_url ); ?>"
 												target="_blank"
 												rel="noopener"
@@ -701,7 +701,7 @@ $guest_upload_vault_refresh_media_url = admin_url( 'admin-post.php?action=guv_re
 										<?php endif; ?>
 										<?php if ( $guest_upload_vault_can_download && '' !== $guest_upload_vault_download_url ) : ?>
 											<a
-												class="button button-small guv-icon-action"
+												class="button button-small guest-upload-vault-icon-action"
 												href="<?php echo esc_url( $guest_upload_vault_download_url ); ?>"
 												title="<?php esc_attr_e( 'Download', 'guest-upload-vault' ); ?>"
 												aria-label="<?php esc_attr_e( 'Download', 'guest-upload-vault' ); ?>"
@@ -715,18 +715,18 @@ $guest_upload_vault_refresh_media_url = admin_url( 'admin-post.php?action=guv_re
 											$guest_upload_vault_delete_url = wp_nonce_url(
 												add_query_arg(
 													array(
-														'action' => 'guv_delete_upload',
+														'action' => 'guest_upload_vault_delete_upload',
 														'file'   => $guest_upload_vault_stored_file,
 													),
 													admin_url( 'admin-post.php' )
 												),
-												'guv_delete_file_' . $guest_upload_vault_stored_file
+												'guest_upload_vault_delete_file_' . $guest_upload_vault_stored_file
 											);
 											?>
 											<a
 												href="<?php echo esc_url( $guest_upload_vault_delete_url ); ?>"
-												class="button button-small guv-icon-action guv-icon-action-danger guv-delete-button"
-												data-guv-delete-scope="single"
+												class="button button-small guest-upload-vault-icon-action guest-upload-vault-icon-action-danger guest-upload-vault-delete-button"
+												data-guest-upload-vault-delete-scope="single"
 												title="<?php esc_attr_e( 'Delete', 'guest-upload-vault' ); ?>"
 												aria-label="<?php esc_attr_e( 'Delete', 'guest-upload-vault' ); ?>"
 											>
@@ -734,7 +734,7 @@ $guest_upload_vault_refresh_media_url = admin_url( 'admin-post.php?action=guv_re
 												<span class="screen-reader-text"><?php esc_html_e( 'Delete', 'guest-upload-vault' ); ?></span>
 											</a>
 										<?php else : ?>
-											<span class="guv-action-unavailable" title="<?php esc_attr_e( 'Unavailable', 'guest-upload-vault' ); ?>" aria-label="<?php esc_attr_e( 'Unavailable', 'guest-upload-vault' ); ?>">
+											<span class="guest-upload-vault-action-unavailable" title="<?php esc_attr_e( 'Unavailable', 'guest-upload-vault' ); ?>" aria-label="<?php esc_attr_e( 'Unavailable', 'guest-upload-vault' ); ?>">
 												<span class="dashicons dashicons-minus" aria-hidden="true"></span>
 												<span class="screen-reader-text"><?php esc_html_e( 'Unavailable', 'guest-upload-vault' ); ?></span>
 											</span>
@@ -748,10 +748,10 @@ $guest_upload_vault_refresh_media_url = admin_url( 'admin-post.php?action=guv_re
 			<?php endif; ?>
 		</div>
 	<?php else : ?>
-		<div class="guv-settings-card">
+		<div class="guest-upload-vault-settings-card">
 			<h2><?php esc_html_e( 'How this plugin works', 'guest-upload-vault' ); ?></h2>
 			<p><?php esc_html_e( 'Guest Upload Vault provides a protected guest upload page for event photos and videos. Guests can only upload through the tokenized link or QR code. Uploaded files are stored encrypted in uploads/guest-upload-vault and can be managed by admins in the Media tab.', 'guest-upload-vault' ); ?></p>
-			<ol class="guv-ops-list">
+			<ol class="guest-upload-vault-ops-list">
 				<li><?php esc_html_e( 'Create a WordPress page with shortcode [guest_upload_vault].', 'guest-upload-vault' ); ?></li>
 				<li><?php esc_html_e( 'Set that page URL in Settings and save.', 'guest-upload-vault' ); ?></li>
 				<li><?php esc_html_e( 'Copy the protected guest link or print the QR code.', 'guest-upload-vault' ); ?></li>
@@ -760,14 +760,14 @@ $guest_upload_vault_refresh_media_url = admin_url( 'admin-post.php?action=guv_re
 			</ol>
 		</div>
 
-		<div class="guv-settings-card">
+		<div class="guest-upload-vault-settings-card">
 			<h2><?php esc_html_e( 'Theme and page design info', 'guest-upload-vault' ); ?></h2>
 			<p><?php esc_html_e( 'The visual area above the upload card (for example hero images, logo, page header, and footer) is controlled by your active theme or page builder. The plugin itself renders the protected upload form card via shortcode inside that page.', 'guest-upload-vault' ); ?></p>
 		</div>
 
-		<div class="guv-settings-card">
+		<div class="guest-upload-vault-settings-card">
 			<h2><?php esc_html_e( 'Pilot handoff notes', 'guest-upload-vault' ); ?></h2>
-			<ul class="guv-ops-list">
+			<ul class="guest-upload-vault-ops-list">
 				<li><?php esc_html_e( 'Backup and restore database + uploads/guest-upload-vault together to keep media decryptable.', 'guest-upload-vault' ); ?></li>
 				<li><?php esc_html_e( 'Regenerating the guest token invalidates previous guest links and printed QR codes.', 'guest-upload-vault' ); ?></li>
 				<li><?php esc_html_e( 'Cleanup On Uninstall runs only when the plugin is uninstalled, not when it is deactivated.', 'guest-upload-vault' ); ?></li>
@@ -775,10 +775,10 @@ $guest_upload_vault_refresh_media_url = admin_url( 'admin-post.php?action=guv_re
 			</ul>
 		</div>
 
-		<div class="guv-settings-card">
+		<div class="guest-upload-vault-settings-card">
 			<h2><?php esc_html_e( 'Troubleshooting checklist', 'guest-upload-vault' ); ?></h2>
-			<ul class="guv-ops-list">
-				<li><?php esc_html_e( 'If guests cannot open the upload page, check that the URL includes a valid guv_token.', 'guest-upload-vault' ); ?></li>
+			<ul class="guest-upload-vault-ops-list">
+				<li><?php esc_html_e( 'If guests cannot open the upload page, check that the URL includes a valid guest_upload_vault_token.', 'guest-upload-vault' ); ?></li>
 				<li><?php esc_html_e( 'If uploads fail, verify allowed file type and max file size limits.', 'guest-upload-vault' ); ?></li>
 				<li><?php esc_html_e( 'If media cannot be downloaded, refresh diagnostics and check file health status in the Media tab.', 'guest-upload-vault' ); ?></li>
 				<li><?php esc_html_e( 'If decryption errors occur after migration, verify database/options and uploads were restored together.', 'guest-upload-vault' ); ?></li>

@@ -2,8 +2,8 @@
 	'use strict';
 
 	function setQrButtons(dataUrl) {
-		var viewBtn = document.getElementById('guv_view_qr');
-		var downloadBtn = document.getElementById('guv_download_qr');
+		var viewBtn = document.getElementById('guest_upload_vault_view_qr');
+		var downloadBtn = document.getElementById('guest_upload_vault_download_qr');
 
 		if (!viewBtn || !downloadBtn) {
 			return;
@@ -35,7 +35,7 @@
 	}
 
 	function copyProtectedLink() {
-		var input = document.getElementById('guv_protected_upload_url');
+		var input = document.getElementById('guest_upload_vault_protected_upload_url');
 		if (!input) {
 			return;
 		}
@@ -67,8 +67,8 @@
 	}
 
 	function initQrCode() {
-		var container = document.getElementById('guv_qr_code');
-		var input = document.getElementById('guv_protected_upload_url');
+		var container = document.getElementById('guest_upload_vault_qr_code');
+		var input = document.getElementById('guest_upload_vault_protected_upload_url');
 		if (!container || !input || typeof QRCode === 'undefined') {
 			setQrButtons('');
 			return;
@@ -80,7 +80,7 @@
 			return;
 		}
 
-		var config = window.guvAdminQrConfig || {};
+		var config = window.guestUploadVaultAdminQrConfig || {};
 		var size = parseInt(config.qrCodeSize, 10);
 		if (!size || size < 1) {
 			size = 360;
@@ -103,7 +103,7 @@
 	}
 
 	function onReady() {
-		var copyBtn = document.getElementById('guv_copy_link');
+		var copyBtn = document.getElementById('guest_upload_vault_copy_link');
 		if (copyBtn) {
 			copyBtn.addEventListener('click', copyProtectedLink);
 		}

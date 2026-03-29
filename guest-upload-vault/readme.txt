@@ -1,5 +1,5 @@
 === Guest Upload Vault ===
-Contributors: tmsbyr87
+Contributors: tmsbyr
 Tags: guest upload, event upload, private upload, qr upload, media collection
 Requires at least: 6.0
 Tested up to: 6.9

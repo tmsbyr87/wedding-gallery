@@ -17,90 +17,90 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: guest-upload-vault/includes/class-guv-plugin.php:81
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:81
 #: guest-upload-vault/templates/frontend-upload.php:305
 msgid "No files selected yet."
 msgstr "Aún no hay archivos seleccionados."
 
-#: guest-upload-vault/includes/class-guv-plugin.php:82
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:82
 msgid "files selected:"
 msgstr "archivos seleccionados:"
 
-#: guest-upload-vault/includes/class-guv-plugin.php:83
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:83
 msgid "Please choose at least one photo or video."
 msgstr "Elija al menos una foto o un vídeo."
 
-#: guest-upload-vault/includes/class-guv-plugin.php:84
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:84
 msgid "Uploading... Please keep this page open."
 msgstr "Subiendo... Por favor, mantenga esta página abierta."
 
-#: guest-upload-vault/includes/class-guv-plugin.php:85
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:85
 msgid "Upload in progress..."
 msgstr "Subida en curso..."
 
-#: guest-upload-vault/includes/class-guv-plugin.php:86
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:86
 msgid "Almost done..."
 msgstr "Casi terminado..."
 
-#: guest-upload-vault/includes/class-guv-plugin.php:145
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:145
 msgid "Delete this file permanently?"
 msgstr "¿Eliminar este archivo permanentemente?"
 
-#: guest-upload-vault/includes/class-guv-plugin.php:146
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:146
 msgid "Delete selected media permanently?"
 msgstr "¿Eliminar permanentemente los medios seleccionados?"
 
-#: guest-upload-vault/includes/class-guv-plugin.php:147
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:147
 msgid "Delete ALL collected media permanently?"
 msgstr "¿Eliminar TODOS los medios recopilados de forma permanente?"
 
-#: guest-upload-vault/includes/class-guv-plugin.php:148
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:148
 #: guest-upload-vault/templates/admin-page.php:141
 msgid "Please select at least one file first."
 msgstr "Seleccione primero al menos un archivo."
 
-#: guest-upload-vault/includes/class-guv-plugin.php:770
-#: guest-upload-vault/includes/class-guv-plugin.php:771
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:770
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:771
 #: guest-upload-vault/templates/admin-page.php:56
 msgid "Guest Upload Vault"
 msgstr "Guest Upload Vault"
 
-#: guest-upload-vault/includes/class-guv-plugin.php:845
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:845
 msgid "Invalid upload token."
 msgstr "Token de carga no válido."
 
-#: guest-upload-vault/includes/class-guv-plugin.php:850
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:850
 msgid "Security check failed."
 msgstr "El control de seguridad falló."
 
-#: guest-upload-vault/includes/class-guv-plugin.php:855
-#: guest-upload-vault/includes/class-guv-plugin.php:860
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:855
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:860
 msgid "Please select at least one file."
 msgstr "Seleccione al menos un archivo."
 
-#: guest-upload-vault/includes/class-guv-plugin.php:871
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:871
 msgid "Upload encryption is unavailable on this server."
 msgstr "El cifrado de carga no está disponible en este servidor."
 
 #. translators: %d: uploaded files count
-#: guest-upload-vault/includes/class-guv-plugin.php:1021
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:1021
 #, php-format
 msgid "%d file uploaded successfully."
 msgid_plural "%d files uploaded successfully."
 msgstr[0] "El archivo %d se cargó correctamente."
 msgstr[1] "%d archivos cargados correctamente."
 
-#: guest-upload-vault/includes/class-guv-plugin.php:1029
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:1029
 msgid "Some files could not be uploaded."
 msgstr "Algunos archivos no se pudieron cargar."
 
 #. translators: %s: upload issue summary
-#: guest-upload-vault/includes/class-guv-plugin.php:1043
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:1043
 #, php-format
 msgid "No files were uploaded. %s"
 msgstr "No se cargaron archivos. %s"
 
-#: guest-upload-vault/includes/class-guv-plugin.php:1049
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:1049
 msgid ""
 "No files were uploaded. Please check file type and size limits and try again."
 msgstr ""
@@ -108,7 +108,7 @@ msgstr ""
 "inténtelo nuevamente."
 
 #. translators: %1$d: rejected videos count, %2$d: max upload size in MB
-#: guest-upload-vault/includes/class-guv-plugin.php:1080
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:1080
 #, php-format
 msgid "%1$d video was too large to upload (max %2$d MB)."
 msgid_plural "%1$d videos were too large to upload (max %2$d MB)."
@@ -116,7 +116,7 @@ msgstr[0] "El vídeo %1$d era demasiado grande para cargarlo (máximo %2$d MB)."
 msgstr[1] "%1$d videos eran demasiado grandes para cargarlos (máximo %2$d MB)."
 
 #. translators: %1$d: rejected photos count, %2$d: max upload size in MB
-#: guest-upload-vault/includes/class-guv-plugin.php:1087
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:1087
 #, php-format
 msgid "%1$d photo was too large to upload (max %2$d MB)."
 msgid_plural "%1$d photos were too large to upload (max %2$d MB)."
@@ -124,7 +124,7 @@ msgstr[0] "La foto %1$d era demasiado grande para cargarla (máximo %2$d MB)."
 msgstr[1] "%1$d fotos eran demasiado grandes para cargarlas (máximo %2$d MB)."
 
 #. translators: %1$d: rejected files count, %2$d: max upload size in MB
-#: guest-upload-vault/includes/class-guv-plugin.php:1094
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:1094
 #, php-format
 msgid "%1$d file was too large to upload (max %2$d MB)."
 msgid_plural "%1$d files were too large to upload (max %2$d MB)."
@@ -134,7 +134,7 @@ msgstr[1] ""
 "Los archivos %1$d eran demasiado grandes para cargarlos (máximo %2$d MB)."
 
 #. translators: %d: unsupported files count
-#: guest-upload-vault/includes/class-guv-plugin.php:1104
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:1104
 #, php-format
 msgid "%d file was not supported."
 msgid_plural "%d files were not supported."
@@ -142,63 +142,63 @@ msgstr[0] "El archivo %d no era compatible."
 msgstr[1] "No se admitieron %d archivos."
 
 #. translators: %d: files that could not be uploaded
-#: guest-upload-vault/includes/class-guv-plugin.php:1112
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:1112
 #, php-format
 msgid "%d file could not be uploaded. Please try again."
 msgid_plural "%d files could not be uploaded. Please try again."
 msgstr[0] "No se pudo cargar el archivo %d. Por favor inténtalo de nuevo."
 msgstr[1] "No se pudieron cargar %d archivos. Por favor inténtalo de nuevo."
 
-#: guest-upload-vault/includes/class-guv-plugin.php:1257
-#: guest-upload-vault/includes/class-guv-plugin.php:1910
-#: guest-upload-vault/includes/class-guv-plugin.php:2039
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:1257
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:1910
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:2039
 msgid "You are not allowed to access this page."
 msgstr "No tienes permitido acceder a esta página."
 
-#: guest-upload-vault/includes/class-guv-plugin.php:1402
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:1402
 msgid "Encrypted file is healthy and downloadable."
 msgstr "El archivo cifrado está en buen estado y se puede descargar."
 
-#: guest-upload-vault/includes/class-guv-plugin.php:1413
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:1413
 msgid "Metadata file is missing. This upload cannot be decrypted."
 msgstr "Falta el archivo de metadatos. Esta carga no se puede descifrar."
 
-#: guest-upload-vault/includes/class-guv-plugin.php:1417
-#: guest-upload-vault/includes/class-guv-plugin.php:1442
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:1417
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:1442
 msgid ""
 "Metadata looks damaged or unreadable. Download is currently unavailable."
 msgstr ""
 "Los metadatos parecen dañados o ilegibles. La descarga no está disponible "
 "actualmente."
 
-#: guest-upload-vault/includes/class-guv-plugin.php:1423
-#: guest-upload-vault/includes/class-guv-plugin.php:1436
-#: guest-upload-vault/includes/class-guv-plugin.php:1451
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:1423
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:1436
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:1451
 msgid "Encrypted with a key version not available on this site."
 msgstr "Cifrado con una versión de clave no disponible en este sitio."
 
-#: guest-upload-vault/includes/class-guv-plugin.php:1429
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:1429
 msgid "Could not read encrypted file data."
 msgstr "No se pudieron leer los datos del archivo cifrado."
 
-#: guest-upload-vault/includes/class-guv-plugin.php:1439
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:1439
 msgid ""
 "Metadata integrity check failed. File metadata or blob appears modified."
 msgstr ""
 "Error en la comprobación de la integridad de los metadatos. Los metadatos "
 "del archivo o el blob aparecen modificados."
 
-#: guest-upload-vault/includes/class-guv-plugin.php:1454
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:1454
 msgid "Private metadata could not be decoded."
 msgstr "No se pudieron descodificar los metadatos privados."
 
-#: guest-upload-vault/includes/class-guv-plugin.php:1461
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:1461
 msgid "Decryption check failed. The file or metadata may be corrupted."
 msgstr ""
 "La comprobación de descifrado falló. El archivo o los metadatos pueden estar "
 "dañados."
 
-#: guest-upload-vault/includes/class-guv-plugin.php:1465
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:1465
 msgid ""
 "Download works, but metadata is from legacy plaintext format and should be "
 "re-uploaded for better privacy."
@@ -206,82 +206,82 @@ msgstr ""
 "La descarga funciona, pero los metadatos provienen del formato de texto sin "
 "formato heredado y deben volver a cargarse para mejorar la privacidad."
 
-#: guest-upload-vault/includes/class-guv-plugin.php:1507
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:1507
 msgid ""
 "Legacy plaintext file found. It is intentionally not served by this plugin."
 msgstr ""
 "Se encontró un archivo de texto sin formato heredado. Este complemento no lo "
 "ofrece intencionalmente."
 
-#: guest-upload-vault/includes/class-guv-plugin.php:1658
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:1658
 msgid "Invalid file."
 msgstr "Archivo no válido."
 
-#: guest-upload-vault/includes/class-guv-plugin.php:1663
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:1663
 msgid "File does not exist."
 msgstr "El archivo no existe."
 
-#: guest-upload-vault/includes/class-guv-plugin.php:1669
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:1669
 msgid "Missing file metadata."
 msgstr "Faltan metadatos del archivo."
 
-#: guest-upload-vault/includes/class-guv-plugin.php:1692
-#: guest-upload-vault/includes/class-guv-plugin.php:1714
-#: guest-upload-vault/includes/class-guv-plugin.php:1724
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:1692
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:1714
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:1724
 msgid "Invalid file metadata."
 msgstr "Metadatos de archivo no válidos."
 
-#: guest-upload-vault/includes/class-guv-plugin.php:1697
-#: guest-upload-vault/includes/class-guv-plugin.php:1708
-#: guest-upload-vault/includes/class-guv-plugin.php:1721
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:1697
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:1708
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:1721
 msgid "Could not decrypt file: unsupported encryption key version."
 msgstr ""
 "No se pudo descifrar el archivo: versión de clave de cifrado no compatible."
 
-#: guest-upload-vault/includes/class-guv-plugin.php:1702
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:1702
 msgid "Could not read file."
 msgstr "No se pudo leer el archivo."
 
-#: guest-upload-vault/includes/class-guv-plugin.php:1711
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:1711
 msgid "Could not decrypt file. Metadata integrity check failed."
 msgstr ""
 "No se pudo descifrar el archivo. Error en la comprobación de la integridad "
 "de los metadatos."
 
-#: guest-upload-vault/includes/class-guv-plugin.php:1729
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:1729
 msgid ""
 "Could not decrypt file. Metadata may be invalid or the key may have changed."
 msgstr ""
 "No se pudo descifrar el archivo. Es posible que los metadatos no sean "
 "válidos o que la clave haya cambiado."
 
-#: guest-upload-vault/includes/class-guv-plugin.php:1952
-#: guest-upload-vault/includes/class-guv-plugin.php:2109
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:1952
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:2109
 msgid "You are not allowed to download files."
 msgstr "No se le permite descargar archivos."
 
-#: guest-upload-vault/includes/class-guv-plugin.php:1958
-#: guest-upload-vault/includes/class-guv-plugin.php:1985
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:1958
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:1985
 msgid "Missing file."
 msgstr "Archivo faltante."
 
-#: guest-upload-vault/includes/class-guv-plugin.php:1963
-#: guest-upload-vault/includes/class-guv-plugin.php:1990
-#: guest-upload-vault/includes/class-guv-plugin.php:2023
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:1963
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:1990
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:2023
 msgid "Invalid security token."
 msgstr "Token de seguridad no válido."
 
-#: guest-upload-vault/includes/class-guv-plugin.php:1979
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:1979
 msgid "You are not allowed to access this file."
 msgstr "No tiene permiso para acceder a este archivo."
 
-#: guest-upload-vault/includes/class-guv-plugin.php:2006
-#: guest-upload-vault/includes/class-guv-plugin.php:2055
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:2006
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:2055
 msgid "You are not allowed to delete files."
 msgstr "No está permitido eliminar archivos."
 
 #. translators: %d: skipped files count in ZIP export
-#: guest-upload-vault/includes/class-guv-plugin.php:2168
+#: guest-upload-vault/includes/class-guest-upload-vault-plugin.php:2168
 #, php-format
 msgid "%d file(s) were skipped because they are not currently decryptable."
 msgstr "Se omitieron %d archivos porque actualmente no se pueden descifrar."
@@ -891,10 +891,10 @@ msgstr "Lista de verificación de solución de problemas"
 #: guest-upload-vault/templates/admin-page.php:720
 msgid ""
 "If guests cannot open the upload page, check that the URL includes a valid "
-"guv_token."
+"guest_upload_vault_token."
 msgstr ""
 "Si los invitados no pueden abrir la página de carga, verifique que la URL "
-"incluya un guv_token válido."
+"incluya un guest_upload_vault_token válido."
 
 #: guest-upload-vault/templates/admin-page.php:721
 msgid "If uploads fail, verify allowed file type and max file size limits."

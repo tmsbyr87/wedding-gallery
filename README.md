@@ -5,7 +5,7 @@ WordPress plugin for collecting guest event photos/videos through a protected up
 ## Pilot Scope
 
 - Guest upload page via shortcode: `[guest_upload_vault]`
-- Token-protected guest access link (`guv_token`)
+- Token-protected guest access link (`guest_upload_vault_token`)
 - Local QR code generation in WP admin (no external QR service)
 - Mobile-first guest upload UI (multi-file + progress feedback)
 - Encrypted media blob storage in `wp-content/uploads/guest-upload-vault/`
@@ -38,7 +38,7 @@ WordPress plugin for collecting guest event photos/videos through a protected up
 ## Guest Token + QR Workflow
 
 1. Admin sets `Upload Page URL`.
-2. Plugin builds protected URL by appending `guv_token`.
+2. Plugin builds protected URL by appending `guest_upload_vault_token`.
 3. Admin shares either:
    - the protected URL directly, or
    - QR code from admin page.
@@ -62,7 +62,7 @@ If only one side is restored (DB only or uploads only), files may become undecry
 Plugin setting: **Cleanup On Uninstall**
 
 - Unchecked (default safe behavior): uninstall keeps files on disk.
-- Checked: uninstall attempts to permanently remove `uploads/guest-upload-vault/` contents and then deletes plugin option `guv_settings`.
+- Checked: uninstall attempts to permanently remove `uploads/guest-upload-vault/` contents and then deletes plugin option `guest_upload_vault_settings`.
 
 Use checked cleanup only when permanent deletion is explicitly desired.
 

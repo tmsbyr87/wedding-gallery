@@ -4,29 +4,37 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class GUV_Plugin {
+class Guest_Upload_Vault_Plugin {
 	const ADMIN_PAGE_SLUG       = 'guest-upload-vault';
 	const ADMIN_PAGE_MEDIA_SLUG = 'guest-upload-vault-media';
 	const ADMIN_PAGE_HELP_SLUG  = 'guest-upload-vault-help';
-	const OPTION_KEY          = 'guv_settings';
-	const SHORTCODE_TAG       = 'guest_upload_vault';
-	const TOKEN_QUERY_ARG     = 'guv_token';
-	const DEFAULT_MAX_SIZE_MB = 50;
+	const OPTION_KEY                 = 'guest_upload_vault_settings';
+	const LEGACY_OPTION_KEY          = 'guv_settings';
+	const SHORTCODE_TAG              = 'guest_upload_vault';
+	const TOKEN_QUERY_ARG            = 'guest_upload_vault_token';
+	const LEGACY_TOKEN_QUERY_ARG     = 'guv_token';
+	const STATUS_QUERY_ARG           = 'guest_upload_vault_status';
+	const MESSAGE_QUERY_ARG          = 'guest_upload_vault_message';
+	const NOTICE_QUERY_ARG           = 'guest_upload_vault_notice';
+	const NOTICE_COUNT_QUERY_ARG     = 'guest_upload_vault_count';
+	const NOTICE_SKIPPED_QUERY_ARG   = 'guest_upload_vault_skipped';
+	const DEFAULT_MAX_SIZE_MB        = 50;
 	const DEFAULT_FALLBACK_SAFE_MAX_MB = 10;
-	const ACCESS_TOKEN_LENGTH = 48;
-	const QR_CODE_DEFAULT_SIZE = 360;
-	const ENCRYPTED_FILE_EXT  = '.guvenc';
-	const METADATA_FILE_EXT   = '.guvmeta';
-	const MEDIA_OVERVIEW_CACHE_KEY = 'guv_media_overview_v1';
-	const MEDIA_OVERVIEW_CACHE_TTL = 120;
+	const ACCESS_TOKEN_LENGTH        = 48;
+	const QR_CODE_DEFAULT_SIZE       = 360;
+	const ENCRYPTED_FILE_EXT         = '.guvenc';
+	const METADATA_FILE_EXT          = '.guvmeta';
+	const MEDIA_OVERVIEW_CACHE_KEY   = 'guest_upload_vault_media_overview_v1';
+	const LEGACY_MEDIA_OVERVIEW_CACHE_KEY = 'guv_media_overview_v1';
+	const MEDIA_OVERVIEW_CACHE_TTL   = 120;
 
 	/**
-	 * @var GUV_Plugin|null
+	 * @var Guest_Upload_Vault_Plugin|null
 	 */
 	private static $instance = null;
 
 	/**
-	 * @return GUV_Plugin
+	 * @return Guest_Upload_Vault_Plugin
 	 */
 	public static function instance() {
 		if ( null === self::$instance ) {
@@ -42,9 +50,10 @@ class GUV_Plugin {
 	 * @return void
 	 */
 	public static function activate() {
-		$current  = get_option( self::OPTION_KEY, array() );
+		list( $current ) = self::get_stored_settings_data();
 		$settings = self::normalize_settings( $current );
-		update_option( self::OPTION_KEY, $settings );
+		self::persist_settings( $settings );
+		self::delete_legacy_media_overview_cache();
 
 		self::create_upload_dir();
 	}
@@ -57,15 +66,15 @@ class GUV_Plugin {
 
 		add_action( 'admin_menu', array( $this, 'register_admin_menu' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_assets' ) );
-		add_action( 'admin_post_guv_save_settings', array( $this, 'handle_save_settings' ) );
-		add_action( 'admin_post_guv_upload', array( $this, 'handle_upload' ) );
-		add_action( 'admin_post_nopriv_guv_upload', array( $this, 'handle_upload' ) );
-		add_action( 'admin_post_guv_download_upload', array( $this, 'handle_download' ) );
-		add_action( 'admin_post_guv_view_upload', array( $this, 'handle_view_upload' ) );
-		add_action( 'admin_post_guv_delete_upload', array( $this, 'handle_delete_upload' ) );
-		add_action( 'admin_post_guv_bulk_download', array( $this, 'handle_bulk_download' ) );
-		add_action( 'admin_post_guv_bulk_delete', array( $this, 'handle_bulk_delete' ) );
-		add_action( 'admin_post_guv_refresh_media_overview', array( $this, 'handle_refresh_media_overview' ) );
+		add_action( 'admin_post_guest_upload_vault_save_settings', array( $this, 'handle_save_settings' ) );
+		add_action( 'admin_post_guest_upload_vault_upload', array( $this, 'handle_upload' ) );
+		add_action( 'admin_post_nopriv_guest_upload_vault_upload', array( $this, 'handle_upload' ) );
+		add_action( 'admin_post_guest_upload_vault_download_upload', array( $this, 'handle_download' ) );
+		add_action( 'admin_post_guest_upload_vault_view_upload', array( $this, 'handle_view_upload' ) );
+		add_action( 'admin_post_guest_upload_vault_delete_upload', array( $this, 'handle_delete_upload' ) );
+		add_action( 'admin_post_guest_upload_vault_bulk_download', array( $this, 'handle_bulk_download' ) );
+		add_action( 'admin_post_guest_upload_vault_bulk_delete', array( $this, 'handle_bulk_delete' ) );
+		add_action( 'admin_post_guest_upload_vault_refresh_media_overview', array( $this, 'handle_refresh_media_overview' ) );
 	}
 
 	/**
@@ -73,10 +82,10 @@ class GUV_Plugin {
 	 */
 	private function enqueue_frontend_upload_script() {
 		wp_register_script(
-			'guv-frontend-upload',
-			GUV_PLUGIN_URL . 'assets/js/frontend-upload.js',
+			'guest-upload-vault-frontend-upload',
+			GUEST_UPLOAD_VAULT_PLUGIN_URL . 'assets/js/frontend-upload.js',
 			array(),
-			GUV_PLUGIN_VERSION,
+			GUEST_UPLOAD_VAULT_PLUGIN_VERSION,
 			true
 		);
 
@@ -91,10 +100,10 @@ class GUV_Plugin {
 
 		$json_i18n_data = wp_json_encode( $i18n_data );
 		if ( false !== $json_i18n_data ) {
-			wp_add_inline_script( 'guv-frontend-upload', 'window.guvUploadI18n = ' . $json_i18n_data . ';', 'before' );
+			wp_add_inline_script( 'guest-upload-vault-frontend-upload', 'window.guestUploadVaultUploadI18n = ' . $json_i18n_data . ';', 'before' );
 		}
 
-		wp_enqueue_script( 'guv-frontend-upload' );
+		wp_enqueue_script( 'guest-upload-vault-frontend-upload' );
 	}
 
 	/**
@@ -113,31 +122,31 @@ class GUV_Plugin {
 		}
 
 		wp_register_script(
-			'guv-admin-qrcode',
-			GUV_PLUGIN_URL . 'assets/js/qrcode.min.js',
+			'guest-upload-vault-admin-qrcode',
+			GUEST_UPLOAD_VAULT_PLUGIN_URL . 'assets/js/qrcode.min.js',
 			array(),
-			GUV_PLUGIN_VERSION,
+			GUEST_UPLOAD_VAULT_PLUGIN_VERSION,
 			true
 		);
 		wp_register_script(
-			'guv-admin-qr',
-			GUV_PLUGIN_URL . 'assets/js/admin-qr.js',
-			array( 'guv-admin-qrcode' ),
-			GUV_PLUGIN_VERSION,
+			'guest-upload-vault-admin-qr',
+			GUEST_UPLOAD_VAULT_PLUGIN_URL . 'assets/js/admin-qr.js',
+			array( 'guest-upload-vault-admin-qrcode' ),
+			GUEST_UPLOAD_VAULT_PLUGIN_VERSION,
 			true
 		);
 		wp_register_script(
-			'guv-admin-media',
-			GUV_PLUGIN_URL . 'assets/js/admin-media.js',
+			'guest-upload-vault-admin-media',
+			GUEST_UPLOAD_VAULT_PLUGIN_URL . 'assets/js/admin-media.js',
 			array(),
-			GUV_PLUGIN_VERSION,
+			GUEST_UPLOAD_VAULT_PLUGIN_VERSION,
 			true
 		);
 		wp_register_style(
-			'guv-admin',
-			GUV_PLUGIN_URL . 'assets/css/admin.css',
+			'guest-upload-vault-admin',
+			GUEST_UPLOAD_VAULT_PLUGIN_URL . 'assets/css/admin.css',
 			array(),
-			GUV_PLUGIN_VERSION
+			GUEST_UPLOAD_VAULT_PLUGIN_VERSION
 		);
 
 		$config_json = wp_json_encode(
@@ -146,7 +155,7 @@ class GUV_Plugin {
 			)
 		);
 		if ( false !== $config_json ) {
-			wp_add_inline_script( 'guv-admin-qr', 'window.guvAdminQrConfig = ' . $config_json . ';', 'before' );
+			wp_add_inline_script( 'guest-upload-vault-admin-qr', 'window.guestUploadVaultAdminQrConfig = ' . $config_json . ';', 'before' );
 		}
 
 		$media_i18n_json = wp_json_encode(
@@ -158,13 +167,13 @@ class GUV_Plugin {
 			)
 		);
 		if ( false !== $media_i18n_json ) {
-			wp_add_inline_script( 'guv-admin-media', 'window.guvAdminMediaI18n = ' . $media_i18n_json . ';', 'before' );
+			wp_add_inline_script( 'guest-upload-vault-admin-media', 'window.guestUploadVaultAdminMediaI18n = ' . $media_i18n_json . ';', 'before' );
 		}
 
-		wp_enqueue_script( 'guv-admin-qrcode' );
-		wp_enqueue_script( 'guv-admin-qr' );
-		wp_enqueue_script( 'guv-admin-media' );
-		wp_enqueue_style( 'guv-admin' );
+		wp_enqueue_script( 'guest-upload-vault-admin-qrcode' );
+		wp_enqueue_script( 'guest-upload-vault-admin-qr' );
+		wp_enqueue_script( 'guest-upload-vault-admin-media' );
+		wp_enqueue_style( 'guest-upload-vault-admin' );
 	}
 
 	/**
@@ -210,17 +219,54 @@ class GUV_Plugin {
 	}
 
 	/**
+	 * @return array{0:mixed,1:bool}
+	 */
+	private static function get_stored_settings_data() {
+		$current = get_option( self::OPTION_KEY, null );
+		if ( null !== $current ) {
+			return array( $current, false );
+		}
+
+		$legacy = get_option( self::LEGACY_OPTION_KEY, null );
+		if ( null !== $legacy ) {
+			return array( $legacy, true );
+		}
+
+		return array( array(), false );
+	}
+
+	/**
+	 * @param array<string, string|int> $settings
+	 * @return void
+	 */
+	private static function persist_settings( $settings ) {
+		update_option( self::OPTION_KEY, $settings );
+
+		if ( null !== get_option( self::LEGACY_OPTION_KEY, null ) ) {
+			delete_option( self::LEGACY_OPTION_KEY );
+		}
+	}
+
+	/**
 	 * @return array<string, string|int>
 	 */
 	private function get_settings() {
-		$current  = get_option( self::OPTION_KEY, array() );
+		list( $current, $used_legacy_option ) = self::get_stored_settings_data();
 		$settings = self::normalize_settings( $current );
+		$legacy_option_exists = null !== get_option( self::LEGACY_OPTION_KEY, null );
 
-		if ( ! is_array( $current ) || $settings !== $current ) {
-			update_option( self::OPTION_KEY, $settings );
+		if ( $used_legacy_option || $legacy_option_exists || ! is_array( $current ) || $settings !== $current ) {
+			self::persist_settings( $settings );
 		}
 
 		return $settings;
+	}
+
+	/**
+	 * @return void
+	 */
+	private static function delete_legacy_media_overview_cache() {
+		delete_transient( self::LEGACY_MEDIA_OVERVIEW_CACHE_KEY );
 	}
 
 	/**
@@ -829,6 +875,32 @@ class GUV_Plugin {
 	}
 
 	/**
+	 * @return string
+	 */
+	private function get_request_token() {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only token lookup for protected page access.
+		$token = isset( $_GET[ self::TOKEN_QUERY_ARG ] ) ? sanitize_text_field( wp_unslash( $_GET[ self::TOKEN_QUERY_ARG ] ) ) : '';
+		if ( '' !== $token ) {
+			return $token;
+		}
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- legacy read-only token fallback for pre-migration links.
+		return isset( $_GET[ self::LEGACY_TOKEN_QUERY_ARG ] ) ? sanitize_text_field( wp_unslash( $_GET[ self::LEGACY_TOKEN_QUERY_ARG ] ) ) : '';
+	}
+
+	/**
+	 * @return string
+	 */
+	private function get_posted_token() {
+		$token = isset( $_POST[ self::TOKEN_QUERY_ARG ] ) ? sanitize_text_field( wp_unslash( $_POST[ self::TOKEN_QUERY_ARG ] ) ) : '';
+		if ( '' !== $token ) {
+			return $token;
+		}
+
+		return isset( $_POST[ self::LEGACY_TOKEN_QUERY_ARG ] ) ? sanitize_text_field( wp_unslash( $_POST[ self::LEGACY_TOKEN_QUERY_ARG ] ) ) : '';
+	}
+
+	/**
 	 * @param array<string, mixed> $atts Shortcode attributes.
 	 * @return string
 	 */
@@ -842,16 +914,16 @@ class GUV_Plugin {
 
 		$settings      = $this->get_settings();
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only token check for protected page access.
-		$current_token = isset( $_GET[ self::TOKEN_QUERY_ARG ] ) ? sanitize_text_field( wp_unslash( $_GET[ self::TOKEN_QUERY_ARG ] ) ) : '';
+		$current_token = $this->get_request_token();
 		$token         = (string) $settings['access_token'];
 
 		$is_authorized = ! empty( $current_token ) && ! empty( $token ) && hash_equals( $token, $current_token );
 		$authorized_token = $is_authorized ? $current_token : '';
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only UI message state.
-		$status  = isset( $_GET['guv_status'] ) ? sanitize_key( wp_unslash( $_GET['guv_status'] ) ) : '';
+		$status  = isset( $_GET[ self::STATUS_QUERY_ARG ] ) ? sanitize_key( wp_unslash( $_GET[ self::STATUS_QUERY_ARG ] ) ) : '';
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only UI message state.
-		$message = isset( $_GET['guv_message'] ) ? sanitize_text_field( wp_unslash( $_GET['guv_message'] ) ) : '';
+		$message = isset( $_GET[ self::MESSAGE_QUERY_ARG ] ) ? sanitize_text_field( wp_unslash( $_GET[ self::MESSAGE_QUERY_ARG ] ) ) : '';
 
 		$upload_limits = $this->get_upload_limit_context( absint( $settings['max_upload_mb'] ) );
 		$max_upload_mb = (int) $upload_limits['effective_mb'];
@@ -862,7 +934,7 @@ class GUV_Plugin {
 		$this->enqueue_frontend_upload_script();
 
 		ob_start();
-		require GUV_PLUGIN_DIR . 'templates/frontend-upload.php';
+		require GUEST_UPLOAD_VAULT_PLUGIN_DIR . 'templates/frontend-upload.php';
 
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- template output escapes dynamic data at source.
 		return (string) ob_get_clean();
@@ -876,23 +948,23 @@ class GUV_Plugin {
 
 		$redirect_url = home_url( '/' );
 		$settings     = $this->get_settings();
-		$posted_token = isset( $_POST[ self::TOKEN_QUERY_ARG ] ) ? sanitize_text_field( wp_unslash( $_POST[ self::TOKEN_QUERY_ARG ] ) ) : '';
+		$posted_token = $this->get_posted_token();
 		$token        = (string) $settings['access_token'];
 		if ( empty( $posted_token ) || empty( $token ) || ! hash_equals( $token, $posted_token ) ) {
 			$this->redirect_with_message( $redirect_url, 'error', __( 'Invalid upload token.', 'guest-upload-vault' ) );
 		}
 
-		$nonce_ok = isset( $_POST['guv_upload_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['guv_upload_nonce'] ) ), 'guv_upload_action_' . $posted_token );
+		$nonce_ok = isset( $_POST['guest_upload_vault_upload_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['guest_upload_vault_upload_nonce'] ) ), 'guest_upload_vault_upload_action_' . $posted_token );
 		if ( ! $nonce_ok ) {
 			$this->redirect_with_message( $redirect_url, 'error', __( 'Security check failed.', 'guest-upload-vault' ) );
 		}
 		$redirect_url = isset( $_POST['redirect_to'] ) ? esc_url_raw( wp_unslash( $_POST['redirect_to'] ) ) : home_url( '/' );
 
-		if ( empty( $_FILES['guv_files'] ) || ! is_array( $_FILES['guv_files'] ) ) {
+		if ( empty( $_FILES['guest_upload_vault_files'] ) || ! is_array( $_FILES['guest_upload_vault_files'] ) ) {
 			$this->redirect_with_message( $redirect_url, 'error', __( 'Please select at least one file.', 'guest-upload-vault' ) );
 		}
 
-		$files = $_FILES['guv_files']; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$files = $_FILES['guest_upload_vault_files']; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		if ( empty( $files['name'] ) || ! is_array( $files['name'] ) ) {
 			$this->redirect_with_message( $redirect_url, 'error', __( 'Please select at least one file.', 'guest-upload-vault' ) );
 		}
@@ -1283,7 +1355,7 @@ class GUV_Plugin {
 	private function redirect_admin_notice( $tab, $notice, $extra_args = array() ) {
 		$args = array_merge(
 			array(
-				'guv_notice' => sanitize_key( $notice ),
+				self::NOTICE_QUERY_ARG => sanitize_key( $notice ),
 			),
 			$extra_args
 		);
@@ -1301,8 +1373,8 @@ class GUV_Plugin {
 	private function redirect_with_message( $url, $status, $message ) {
 		$redirect = add_query_arg(
 			array(
-				'guv_status'  => $status,
-				'guv_message' => $message,
+				self::STATUS_QUERY_ARG  => $status,
+				self::MESSAGE_QUERY_ARG => $message,
 			),
 			$url
 		);
@@ -1319,7 +1391,7 @@ class GUV_Plugin {
 			wp_die( esc_html__( 'You are not allowed to access this page.', 'guest-upload-vault' ) );
 		}
 
-		check_admin_referer( 'guv_save_settings', 'guv_save_settings_nonce' );
+		check_admin_referer( 'guest_upload_vault_save_settings', 'guest_upload_vault_save_settings_nonce' );
 
 		$settings = $this->get_settings();
 
@@ -1342,7 +1414,7 @@ class GUV_Plugin {
 		$settings['max_upload_mb']   = (int) $limit_context['effective_mb'];
 		$settings['cleanup_on_uninstall'] = $cleanup_on_uninstall;
 
-		update_option( self::OPTION_KEY, $settings );
+		self::persist_settings( $settings );
 
 		$notice = 'saved';
 		if ( (bool) $limit_context['is_clamped'] ) {
@@ -1646,6 +1718,7 @@ class GUV_Plugin {
 	 */
 	private function invalidate_media_overview_cache() {
 		delete_transient( $this->get_media_overview_cache_key() );
+		self::delete_legacy_media_overview_cache();
 	}
 
 	/**
@@ -2031,13 +2104,13 @@ class GUV_Plugin {
 		$legacy_plaintext_count = 'media' === $current_tab ? (int) $upload_health_summary['legacy_plaintext'] : 0;
 		$qr_code_size            = self::QR_CODE_DEFAULT_SIZE;
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only admin notice state.
-		$notice                  = isset( $_GET['guv_notice'] ) ? sanitize_key( wp_unslash( $_GET['guv_notice'] ) ) : '';
+		$notice                  = isset( $_GET[ self::NOTICE_QUERY_ARG ] ) ? sanitize_key( wp_unslash( $_GET[ self::NOTICE_QUERY_ARG ] ) ) : '';
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only admin notice state.
-		$notice_count            = isset( $_GET['guv_count'] ) ? absint( wp_unslash( $_GET['guv_count'] ) ) : 0;
+		$notice_count            = isset( $_GET[ self::NOTICE_COUNT_QUERY_ARG ] ) ? absint( wp_unslash( $_GET[ self::NOTICE_COUNT_QUERY_ARG ] ) ) : 0;
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only admin notice state.
-		$notice_skipped          = isset( $_GET['guv_skipped'] ) ? absint( wp_unslash( $_GET['guv_skipped'] ) ) : 0;
+		$notice_skipped          = isset( $_GET[ self::NOTICE_SKIPPED_QUERY_ARG ] ) ? absint( wp_unslash( $_GET[ self::NOTICE_SKIPPED_QUERY_ARG ] ) ) : 0;
 
-		require GUV_PLUGIN_DIR . 'templates/admin-page.php';
+		require GUEST_UPLOAD_VAULT_PLUGIN_DIR . 'templates/admin-page.php';
 	}
 
 	/**
@@ -2054,7 +2127,7 @@ class GUV_Plugin {
 			wp_die( esc_html__( 'Missing file.', 'guest-upload-vault' ) );
 		}
 
-		$nonce_ok = isset( $_GET['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'guv_download_file_' . $file_name );
+		$nonce_ok = isset( $_GET['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'guest_upload_vault_download_file_' . $file_name );
 		if ( ! $nonce_ok ) {
 			wp_die( esc_html__( 'Invalid security token.', 'guest-upload-vault' ) );
 		}
@@ -2081,7 +2154,7 @@ class GUV_Plugin {
 			wp_die( esc_html__( 'Missing file.', 'guest-upload-vault' ) );
 		}
 
-		$nonce_ok = isset( $_GET['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'guv_view_file_' . $file_name );
+		$nonce_ok = isset( $_GET['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'guest_upload_vault_view_file_' . $file_name );
 		if ( ! $nonce_ok ) {
 			wp_die( esc_html__( 'Invalid security token.', 'guest-upload-vault' ) );
 		}
@@ -2111,9 +2184,9 @@ class GUV_Plugin {
 			$this->redirect_admin_notice( 'media', 'delete_failed' );
 		}
 
-		$nonce_ok = isset( $_POST['guv_delete_file_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['guv_delete_file_nonce'] ) ), 'guv_delete_file_' . $file_name );
+		$nonce_ok = isset( $_POST['guest_upload_vault_delete_file_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['guest_upload_vault_delete_file_nonce'] ) ), 'guest_upload_vault_delete_file_' . $file_name );
 		if ( ! $nonce_ok ) {
-			$nonce_ok = isset( $_GET['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'guv_delete_file_' . $file_name );
+			$nonce_ok = isset( $_GET['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'guest_upload_vault_delete_file_' . $file_name );
 		}
 		if ( ! $nonce_ok ) {
 			wp_die( esc_html__( 'Invalid security token.', 'guest-upload-vault' ) );
@@ -2121,7 +2194,7 @@ class GUV_Plugin {
 
 		if ( $this->delete_encrypted_blob_and_metadata( $file_name ) ) {
 			$this->invalidate_media_overview_cache();
-			$this->redirect_admin_notice( 'media', 'delete_success', array( 'guv_count' => 1 ) );
+			$this->redirect_admin_notice( 'media', 'delete_success', array( self::NOTICE_COUNT_QUERY_ARG => 1 ) );
 		}
 
 		$this->redirect_admin_notice( 'media', 'delete_failed' );
@@ -2135,7 +2208,7 @@ class GUV_Plugin {
 			wp_die( esc_html__( 'You are not allowed to access this page.', 'guest-upload-vault' ) );
 		}
 
-		check_admin_referer( 'guv_refresh_media_overview', 'guv_refresh_media_overview_nonce' );
+		check_admin_referer( 'guest_upload_vault_refresh_media_overview', 'guest_upload_vault_refresh_media_overview_nonce' );
 
 		$this->invalidate_media_overview_cache();
 		$this->get_media_overview_data( true );
@@ -2147,7 +2220,7 @@ class GUV_Plugin {
 	 * @return string
 	 */
 	private function read_bulk_scope_from_request() {
-		$scope_raw = filter_input( INPUT_POST, 'guv_scope', FILTER_UNSAFE_RAW );
+		$scope_raw = filter_input( INPUT_POST, 'guest_upload_vault_scope', FILTER_UNSAFE_RAW );
 		if ( ! is_string( $scope_raw ) || '' === $scope_raw ) {
 			return 'selected';
 		}
@@ -2159,7 +2232,7 @@ class GUV_Plugin {
 	 * @return array<int, string>
 	 */
 	private function read_bulk_selected_files_from_request() {
-		$selected_raw = filter_input( INPUT_POST, 'guv_files', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+		$selected_raw = filter_input( INPUT_POST, 'guest_upload_vault_files', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
 		if ( ! is_array( $selected_raw ) ) {
 			return array();
 		}
@@ -2177,7 +2250,7 @@ class GUV_Plugin {
 			wp_die( esc_html__( 'You are not allowed to delete files.', 'guest-upload-vault' ) );
 		}
 
-		check_admin_referer( 'guv_bulk_delete', 'guv_bulk_delete_nonce' );
+		check_admin_referer( 'guest_upload_vault_bulk_delete', 'guest_upload_vault_bulk_delete_nonce' );
 
 		$scope          = $this->read_bulk_scope_from_request();
 		$selected_files = $this->read_bulk_selected_files_from_request();
@@ -2203,18 +2276,18 @@ class GUV_Plugin {
 				'media',
 				'bulk_delete_partial',
 				array(
-					'guv_count'   => $deleted,
-					'guv_skipped' => $skipped,
+					self::NOTICE_COUNT_QUERY_ARG   => $deleted,
+					self::NOTICE_SKIPPED_QUERY_ARG => $skipped,
 				)
 			);
 		}
 
 		if ( $deleted > 0 ) {
 			$this->invalidate_media_overview_cache();
-			$this->redirect_admin_notice( 'media', 'bulk_delete_success', array( 'guv_count' => $deleted ) );
+			$this->redirect_admin_notice( 'media', 'bulk_delete_success', array( self::NOTICE_COUNT_QUERY_ARG => $deleted ) );
 		}
 
-		$this->redirect_admin_notice( 'media', 'bulk_delete_failed', array( 'guv_skipped' => $skipped ) );
+		$this->redirect_admin_notice( 'media', 'bulk_delete_failed', array( self::NOTICE_SKIPPED_QUERY_ARG => $skipped ) );
 	}
 
 	/**
@@ -2225,7 +2298,7 @@ class GUV_Plugin {
 			wp_die( esc_html__( 'You are not allowed to download files.', 'guest-upload-vault' ) );
 		}
 
-		check_admin_referer( 'guv_bulk_download', 'guv_bulk_download_nonce' );
+		check_admin_referer( 'guest_upload_vault_bulk_download', 'guest_upload_vault_bulk_download_nonce' );
 
 		$scope          = $this->read_bulk_scope_from_request();
 		$selected_files = $this->read_bulk_selected_files_from_request();
@@ -2285,7 +2358,7 @@ class GUV_Plugin {
 
 		if ( $written < 1 ) {
 			wp_delete_file( $temp_zip );
-			$this->redirect_admin_notice( 'media', 'bulk_download_failed', array( 'guv_skipped' => $skipped ) );
+			$this->redirect_admin_notice( 'media', 'bulk_download_failed', array( 'guest_upload_vault_skipped' => $skipped ) );
 		}
 
 		$archive_name = 'guest-upload-vault-media-' . gmdate( 'Ymd-His' ) . '.zip';

@@ -1,15 +1,15 @@
-.guv-admin-wrap .guv-tab-nav {
+.guest-upload-vault-admin-wrap .guest-upload-vault-tab-nav {
 	margin-bottom: 16px;
 }
 
-.guv-admin-wrap .guv-brand {
+.guest-upload-vault-admin-wrap .guest-upload-vault-brand {
 	display: flex;
 	align-items: center;
 	gap: 14px;
 	margin: 8px 0 14px;
 }
 
-.guv-admin-wrap .guv-brand-logo {
+.guest-upload-vault-admin-wrap .guest-upload-vault-brand-logo {
 	width: 48px;
 	height: 48px;
 	border-radius: 10px;
@@ -18,11 +18,11 @@
 	object-fit: cover;
 }
 
-.guv-admin-wrap .guv-brand .description {
+.guest-upload-vault-admin-wrap .guest-upload-vault-brand .description {
 	margin: 0;
 }
 
-.guv-admin-wrap .guv-settings-card {
+.guest-upload-vault-admin-wrap .guest-upload-vault-settings-card {
 	background: #fff;
 	border: 1px solid #dcdcde;
 	border-radius: 6px;
@@ -31,16 +31,16 @@
 	max-width: 1100px;
 }
 
-.guv-admin-wrap .guv-ops-list {
+.guest-upload-vault-admin-wrap .guest-upload-vault-ops-list {
 	margin: 0;
 	padding-left: 20px;
 }
 
-.guv-admin-wrap .guv-ops-list li {
+.guest-upload-vault-admin-wrap .guest-upload-vault-ops-list li {
 	margin-bottom: 6px;
 }
 
-.guv-admin-wrap .guv-help-box {
+.guest-upload-vault-admin-wrap .guest-upload-vault-help-box {
 	margin-top: 14px;
 	background: #f6f7f7;
 	border: 1px solid #dcdcde;
@@ -49,16 +49,16 @@
 	max-width: 760px;
 }
 
-.guv-admin-wrap .guv-help-box p {
+.guest-upload-vault-admin-wrap .guest-upload-vault-help-box p {
 	margin: 0 0 8px;
 }
 
-.guv-admin-wrap .guv-help-box ol {
+.guest-upload-vault-admin-wrap .guest-upload-vault-help-box ol {
 	margin: 0;
 	padding-left: 20px;
 }
 
-.guv-admin-wrap .guv-qr-box {
+.guest-upload-vault-admin-wrap .guest-upload-vault-qr-box {
 	display: inline-block;
 	border: 1px solid #dcdcde;
 	padding: 8px;
@@ -66,7 +66,7 @@
 	line-height: 0;
 }
 
-.guv-admin-wrap .guv-health-badge {
+.guest-upload-vault-admin-wrap .guest-upload-vault-health-badge {
 	display: inline-block;
 	padding: 2px 8px;
 	border-radius: 999px;
@@ -75,36 +75,36 @@
 	line-height: 1.7;
 }
 
-.guv-admin-wrap .guv-health-ok {
+.guest-upload-vault-admin-wrap .guest-upload-vault-health-ok {
 	background: #e8f7ec;
 	color: #1d5e30;
 }
 
-.guv-admin-wrap .guv-health-warning {
+.guest-upload-vault-admin-wrap .guest-upload-vault-health-warning {
 	background: #fff7e6;
 	color: #8a5a00;
 }
 
-.guv-admin-wrap .guv-health-error {
+.guest-upload-vault-admin-wrap .guest-upload-vault-health-error {
 	background: #fdecea;
 	color: #8b1f17;
 }
 
-.guv-admin-wrap .guv-media-toolbar {
+.guest-upload-vault-admin-wrap .guest-upload-vault-media-toolbar {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 8px;
 	margin: 8px 0 14px;
 }
 
-.guv-admin-wrap .guv-media-kpi-grid {
+.guest-upload-vault-admin-wrap .guest-upload-vault-media-kpi-grid {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
 	gap: 12px;
 	margin: 10px 0 16px;
 }
 
-.guv-admin-wrap .guv-media-kpi-card {
+.guest-upload-vault-admin-wrap .guest-upload-vault-media-kpi-card {
 	display: flex;
 	align-items: center;
 	gap: 12px;
@@ -115,7 +115,7 @@
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
-.guv-admin-wrap .guv-media-kpi-icon {
+.guest-upload-vault-admin-wrap .guest-upload-vault-media-kpi-icon {
 	width: 34px;
 	height: 34px;
 	font-size: 30px;
@@ -123,33 +123,33 @@
 	color: #3858e9;
 }
 
-.guv-admin-wrap .guv-media-kpi-body {
+.guest-upload-vault-admin-wrap .guest-upload-vault-media-kpi-body {
 	display: flex;
 	flex-direction: column;
 }
 
-.guv-admin-wrap .guv-media-kpi-value {
+.guest-upload-vault-admin-wrap .guest-upload-vault-media-kpi-value {
 	font-size: 23px;
 	line-height: 1.2;
 	font-weight: 700;
 	color: #1d2327;
 }
 
-.guv-admin-wrap .guv-media-kpi-label {
+.guest-upload-vault-admin-wrap .guest-upload-vault-media-kpi-label {
 	font-size: 12px;
 	font-weight: 600;
 	color: #50575e;
 }
 
-.guv-admin-wrap .guv-inline-refresh-form {
+.guest-upload-vault-admin-wrap .guest-upload-vault-inline-refresh-form {
 	margin: 10px 0 14px;
 }
 
-.guv-admin-wrap .guv-media-table .check-column {
+.guest-upload-vault-admin-wrap .guest-upload-vault-media-table .check-column {
 	width: 36px;
 }
 
-.guv-admin-wrap .guv-media-thumb {
+.guest-upload-vault-admin-wrap .guest-upload-vault-media-thumb {
 	width: 56px;
 	height: 56px;
 	object-fit: cover;
@@ -158,7 +158,7 @@
 	background: #f0f0f1;
 }
 
-.guv-admin-wrap .guv-media-icon {
+.guest-upload-vault-admin-wrap .guest-upload-vault-media-icon {
 	font-size: 24px;
 	width: 24px;
 	height: 24px;
@@ -166,14 +166,14 @@
 	color: #646970;
 }
 
-.guv-admin-wrap .guv-row-actions {
+.guest-upload-vault-admin-wrap .guest-upload-vault-row-actions {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 6px;
 	align-items: center;
 }
 
-.guv-admin-wrap .guv-icon-action {
+.guest-upload-vault-admin-wrap .guest-upload-vault-icon-action {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -181,26 +181,26 @@
 	padding: 0 8px;
 }
 
-.guv-admin-wrap .guv-icon-action .dashicons {
+.guest-upload-vault-admin-wrap .guest-upload-vault-icon-action .dashicons {
 	width: 16px;
 	height: 16px;
 	font-size: 16px;
 	line-height: 16px;
 }
 
-.guv-admin-wrap .guv-icon-action-danger {
+.guest-upload-vault-admin-wrap .guest-upload-vault-icon-action-danger {
 	color: #8b1f17;
 	border-color: #f0b3ad;
 }
 
-.guv-admin-wrap .guv-icon-action-danger:hover,
-.guv-admin-wrap .guv-icon-action-danger:focus {
+.guest-upload-vault-admin-wrap .guest-upload-vault-icon-action-danger:hover,
+.guest-upload-vault-admin-wrap .guest-upload-vault-icon-action-danger:focus {
 	color: #8b1f17;
 	border-color: #d63638;
 	background: #fff5f5;
 }
 
-.guv-admin-wrap .guv-action-unavailable {
+.guest-upload-vault-admin-wrap .guest-upload-vault-action-unavailable {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
